@@ -13,11 +13,7 @@ export const register = createAsyncThunk(
       const response = await axios.post(
         "http://localhost:8000/api/register",
         userData
-<<<<<<< HEAD
         , { withCredentials: true });
-=======
-      );
->>>>>>> e0a736e286c3b9d92b23acc2621adb9f1471c04e
 
       return response.data;
     } catch (err) {
@@ -36,11 +32,7 @@ export const login = createAsyncThunk(
       const response = await axios.post(
         "http://localhost:8000/api/login",
         credentials
-<<<<<<< HEAD
         , { withCredentials: true });
-=======
-      );
->>>>>>> e0a736e286c3b9d92b23acc2621adb9f1471c04e
 
       return response.data;
     } catch (err) {
