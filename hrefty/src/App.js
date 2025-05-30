@@ -22,6 +22,9 @@ import OverviewTechnicien from "./components/artisanDashboard/dashboardPages/ove
 import RegisterTechnicien from "./components/authPages/registerTechnicien";
 import Login from "./components/authPages/Login";
 import RegisterClient from "./components/authPages/registerClient";
+import Techniciens from "./components/adminDashboard/dashboardPages/techniciens";
+import Demandes_offres from "./components/adminDashboard/dashboardPages/demandes_offres";
+import Overview from "./components/adminDashboard/dashboardPages/overview";
 
 const Acceuil = () => {
   return (
@@ -29,7 +32,7 @@ const Acceuil = () => {
       <Navbar />
       <SignCards />
       <HomeSection />
-      <Search />
+      {/* <Search /> */}
       <ServiceCards />
       <Features />
       <Artisans />
@@ -89,6 +92,9 @@ const DashboardAdmin = () => {
 
 const RoleRoute = ({ allowedRole, children }) => {
   const user = JSON.parse(sessionStorage.getItem("user"));
+  if (allowedRole == 'admin') {
+    return children;
+  }
   if (!user || user.role !== allowedRole) {
     return <Navigate to="/login" />;
   }
@@ -111,7 +117,21 @@ const App = () => {
         <Route path="/register_technicien" element={<RegisterTechnicien />} />
         <Route path="/register_client" element={<RegisterClient />} />
         <Route path="/login" element={<Login />} />
+
         <Route path="/admin" element={<DashboardAdmin />} />
+
+        <Route
+          path="/admin_panel"
+          element={
+            <RoleRoute allowedRole="admin">
+              <AdminDashboard />
+            </RoleRoute>
+          }
+        >
+          <Route path="overview" element={<Overview/>} />
+          <Route path="demandes_offres" element={<Demandes_offres/>} />
+          <Route path="techniciens" element={<Techniciens/>} />
+        </Route>²
 
         <Route
           path="/client_panel"

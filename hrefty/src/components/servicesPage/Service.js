@@ -15,7 +15,7 @@ const Service = ({
       </div>
       <div className="content">
         <div className="serviceInfo">
-          <p className="artisan">{budget} درهم</p>
+          <p className="budget">{budget} درهم</p>
           <p className="category">{dateExecution}</p>
         </div>
         <h1 className="title">{titre}</h1>

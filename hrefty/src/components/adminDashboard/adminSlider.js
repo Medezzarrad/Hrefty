@@ -16,6 +16,7 @@ import {
   faCartShopping,
   faListCheck,
 } from "@fortawesome/free-solid-svg-icons";
+import { NavLink } from "react-router-dom";
 
 const AdminSlider = () => {
   return (
@@ -25,36 +26,36 @@ const AdminSlider = () => {
         <h1>الاسم</h1>
       </div>
       <div className="sliderLeft">
-        <button className="btn">
+        <NavLink to='/' className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faHome} className="ml-2" />
           </div>
           <div className="text">الرئيسية</div>
-        </button>
-        <button className="btn">
+        </NavLink>
+        <NavLink to='/admin_panel/techniciens' className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faUser} className="ml-2" />
           </div>
           <div className="text">عرض ملفات الحرفيين</div>
-        </button>
-        <button className="btn">
+        </NavLink>
+        <NavLink to='/admin_panel/demandes_offres' className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faListCheck} className="ml-2" />
           </div>
           <div className="text">الطلبات والعروض</div>
-        </button>
-        <button className="btn">
+        </NavLink>
+        <NavLink className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faFile} className="ml-2" />
           </div>
           <div className="text">ادارة المحتوى</div>
-        </button>
-        <button className="btn">
+        </NavLink>
+        <NavLink className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faRightFromBracket} className="ml-2" />
           </div>
           <div className="text">تسجيل الخروج</div>
-        </button>
+        </NavLink>
       </div>
     </div>
   );

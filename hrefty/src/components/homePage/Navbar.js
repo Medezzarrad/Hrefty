@@ -1,6 +1,7 @@
 import React from 'react'
 import 'bootstrap/dist/css/bootstrap.min.css';
 import '..//..//style/homePage/Navbar.scss'
+import { NavLink } from 'react-router-dom';
 
 
 const Navbar = () => {
@@ -11,14 +12,13 @@ const Navbar = () => {
       </div>
       <div className='navbarLeft'>
         <ul className='routerLinks'>
-            <li className='home link'>الرئيسية</li>
-            <li className='link'>الخدمات</li>
-            <li className='link'>المهنيون</li>
+            <NavLink to={'/'} className='home link'>الرئيسية</NavLink>
+            <NavLink to={'/services'} className='link'>الخدمات</NavLink>
+            <NavLink to={'/techniciens'} className='link'>المهنيون</NavLink>
             <li className='link'>المدونة</li>
         </ul>
         <div className='buttons'>
-            <button className='btn'>دخول</button>
-            <button className='btn'>تسجيل</button>
+            <NavLink to={'/login'} className='btn'>دخول</NavLink>
         </div>
       </div>
     </div>

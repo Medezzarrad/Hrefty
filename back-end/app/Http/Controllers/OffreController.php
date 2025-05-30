@@ -32,7 +32,7 @@ class OffreController extends Controller
             $vaildatedData = $request->validate([
                 'description' => 'required|string',
                 'montant' => 'required|numeric',
-                'statut' => 'required|string|in:ecceptable,inacceptable,en_cours',
+                'statut' => 'required|string|in:ecceptable,inacceptable,en attente',
                 'idDemande' => 'required|integer',
                 'idArtisan' => 'required|integer',
                 'dateCreation' => 'required|date',

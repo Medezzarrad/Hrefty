@@ -10,8 +10,8 @@ const ServiceCard = ({serviceCardCategorie, serviceCardTitle, serviceCardParagra
       </div>
       <div className='contentRight'>
         <span>{serviceCardCategorie}</span>
-        <p>{serviceCardParagraph}</p>
         <h1>{serviceCardTitle}</h1>
+        <p>{serviceCardParagraph}</p>
       </div>  
     </div>
   )

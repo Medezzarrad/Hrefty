@@ -113,8 +113,31 @@ class ArtisanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(string $id)
-    {
-        //
+public function destroy(string $id)
+{
+    try {
+        $technicien = Artisan::find($id);
+        if (!$technicien) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Technicien not found.'
+            ], 404);
+        }
+
+        $technicien->delete();
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Technicien deleted successfully.',
+            'data' => Artisan::all()
+        ]);
+    } catch (\Throwable $th) {
+        return response()->json([
+            'success' => false,
+            'message' => 'Error deleting the technicien.',
+            'error' => $th->getMessage()
+        ], 500);
     }
+}
+
 }

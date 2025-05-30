@@ -5,6 +5,7 @@ import Button from "react-bootstrap/Button";
 import Modal from "react-bootstrap/Modal";
 import { useDispatch, useSelector } from "react-redux";
 import {
+  deleteDemande,
   listTechniciens,
   updateTechnicien,
 } from "../../../redux/Slices/adminSlice";
@@ -24,6 +25,10 @@ const Techniciens = () => {
     };
     dispatch(updateTechnicien(info));
   };
+
+  const handleDelete = (id) => {
+    dispatch(deleteDemande(id));
+  };
   return (
     <div className="techniciens">
       {techniciens.map((technicien) => (
@@ -39,7 +44,12 @@ const Techniciens = () => {
               >
                 قبول الملف
               </button>
-              <button className="btn btn-danger">رفض الملف</button>
+              <button
+                onClick={() => handleDelete(technicien?.id)}
+                className="btn btn-danger"
+              >
+                رفض الملف
+              </button>
             </div>
             <table className="table table-hover table-bordered">
               <thead>

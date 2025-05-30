@@ -22,20 +22,28 @@ export const updateTechnicien = createAsyncThunk(
     return response.data;
   }
 );
+export const deleteTechnicien = createAsyncThunk(
+  "admin/deleteTechnicien",
+  async (id) => {
+    const response = await axios.delete(
+      `http://localhost:8000/api/artisan/${id}`
+    );
+    return response.data;
+  }
+);
 export const deleteDemande = createAsyncThunk(
   "admin/deleteDemande",
   async (id) => {
-    const response = await axios.delete(`http://localhost:8000/api/demande/${id}`);
+    const response = await axios.delete(
+      `http://localhost:8000/api/demande/${id}`
+    );
     return response.data;
   }
 );
-export const deleteOffre = createAsyncThunk(
-  "admin/deleteOffre",
-  async (id) => {
-    const response = await axios.delete(`http://localhost:8000/api/offre/${id}`);
-    return response.data;
-  }
-);
+export const deleteOffre = createAsyncThunk("admin/deleteOffre", async (id) => {
+  const response = await axios.delete(`http://localhost:8000/api/offre/${id}`);
+  return response.data;
+});
 
 const initialState = {
   TechniciensProfiles: [],
@@ -92,25 +100,38 @@ const adminSlider = createSlice({
       .addCase(deleteDemande.pending, (state) => {
         state.status = "pending";
       })
-    //   .addCase(deleteDemande.fulfilled, (state, action) => {
-    //     state.status = "fulfilled";
-    //     state.demandeOffres = state.demandeOffres.filter((demande) =>
-    //       demande.id === action.payload.id ? action.payload : demande
-    //     );
-    //   })
+      //   .addCase(deleteDemande.fulfilled, (state, action) => {
+      //     state.status = "fulfilled";
+      //     state.demandeOffres = state.demandeOffres.filter((demande) =>
+      //       demande.id === action.payload.id ? action.payload : demande
+      //     );
+      //   })
       .addCase(deleteDemande.rejected, (state) => {
+        state.status = "rejected";
+      })
+
+      .addCase(deleteTechnicien.pending, (state) => {
+        state.status = "pending";
+      })
+      //   .addCase(deleteDemande.fulfilled, (state, action) => {
+      //     state.status = "fulfilled";
+      //     state.demandeOffres = state.demandeOffres.filter((demande) =>
+      //       demande.id === action.payload.id ? action.payload : demande
+      //     );
+      //   })
+      .addCase(deleteTechnicien.rejected, (state) => {
         state.status = "rejected";
       })
 
       .addCase(deleteOffre.pending, (state) => {
         state.status = "pending";
       })
-    //   .addCase(deleteDemande.fulfilled, (state, action) => {
-    //     state.status = "fulfilled";
-    //     state.demandeOffres = state.demandeOffres.filter((demande) =>
-    //       demande.id === action.payload.id ? action.payload : demande
-    //     );
-    //   })
+      //   .addCase(deleteDemande.fulfilled, (state, action) => {
+      //     state.status = "fulfilled";
+      //     state.demandeOffres = state.demandeOffres.filter((demande) =>
+      //       demande.id === action.payload.id ? action.payload : demande
+      //     );
+      //   })
       .addCase(deleteOffre.rejected, (state) => {
         state.status = "rejected";
       });

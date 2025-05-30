@@ -11,17 +11,20 @@ $backgroundColor: #F5F5F5;
     box-sizing: border-box;
 }
 .adminSlider{
+    font-family: 'Tajawal';
     display: flex;
     justify-content: space-between;
     background-color: $primaryColor;
     padding: .5rem 2rem;
     height: 50px;
     border-radius: 0 0 1rem 1rem;
-    button{
-        width: 100%;
+    .btn{
+        display: flex;
+        gap: 10px;
+        border: none;
         color: #fff;
         font-weight: 500;
-        font-size: 17px;
+        // font-size: 17px;
     }
     .sliderRight{
         display: flex;
@@ -43,7 +46,7 @@ $backgroundColor: #F5F5F5;
     .sliderLeft{
         display: flex;
         gap: 1rem;
-        button{
+        .btn{
             display: flex;
             white-space: nowrap;
             align-items: center;
@@ -57,11 +60,11 @@ $backgroundColor: #F5F5F5;
             }
         }
     }
-    .sliderBottom{
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        margin-top: auto;
-    }
+    // .sliderBottom{
+    //     display: flex;
+    //     flex-direction: column;
+    //     align-items: center;
+    //     justify-content: center;
+    //     margin-top: auto;
+    // }
 }

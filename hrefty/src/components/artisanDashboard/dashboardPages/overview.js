@@ -35,7 +35,7 @@ const OverviewTechnicien = () => {
   const [formInputs, setFormInputs] = useState({
     description: "",
     montant: 0,
-    statut: "inacceptable",
+    statut: "en attente",
     idDemande: 0,
     idArtisan: 0,
   });
@@ -46,8 +46,11 @@ const OverviewTechnicien = () => {
   const navigate = useNavigate();
   const user = JSON.parse(sessionStorage.getItem("user"));
   const artisanInfo = useSelector((state) => state.artisan.artisanInfo);
+  console.log(artisanInfo)
   const listOffres = useSelector((state) => state.artisan.listOffres);
+  console.log(listOffres)
   const listDemandes = useSelector((state) => state.artisan.listDemandes);
+  console.log(listDemandes)
   const conversations = useSelector((state) => state.chat.conversations);
 
   useEffect(() => {
@@ -69,16 +72,21 @@ const OverviewTechnicien = () => {
       }
     }
   };
-
   const handleAddOffre = async (idDmnd) => {
-    const newFormInputs = {
-      ...formInputs,
-      idDemande: idDmnd,
-      idArtisan: artisanInfo.id,
-    };
-    setFormInputs(newFormInputs);
-    dispatch(addOffre(newFormInputs));
-    setOffreAdd(false);
+    if(artisanInfo.artisan.status == 'actif'){
+      const newFormInputs = {
+        ...formInputs,
+        idDemande: idDmnd,
+        idArtisan: artisanInfo?.artisan?.id,
+      };
+      setFormInputs(newFormInputs);
+      dispatch(addOffre(newFormInputs));
+      setOffreAdd(false);
+
+    }else{
+      alert('your account is inactif')
+      setOffreAdd(false)
+    }
   };
 
   const openChat = async (offre, clientId, nomClient) => {
@@ -240,13 +248,13 @@ const OverviewTechnicien = () => {
           <tbody>
             {listDemandes &&
               listDemandes.map((demande, index) => {
-                const isProgrammation = demande.category?.nom === "البرمجة";
-                const isInFes = demande.ville === "فاس";
+                const specialite = demande.category?.nom === artisanInfo?.artisan?.specialite?.nom;
+                const ville = demande.ville === artisanInfo?.artisan?.ville;
                 const hasAcceptableOffre = demande.offres?.some(
                   (offre) => offre.statut === "acceptable"
                 );
 
-                if (isProgrammation && isInFes && !hasAcceptableOffre) {
+                if (specialite && ville && !hasAcceptableOffre) {
                   return (
                     <tr key={index}>
                       <td>
@@ -355,7 +363,7 @@ const OverviewTechnicien = () => {
                 .filter((artisan) => artisan.user?.id === artisanInfo.id)
                 .flatMap((artisan) =>
                   artisan.offres
-                    .filter((offre) => offre.statut === "acceptable")
+                    // .filter((offre) => offre.statut === "acceptable")
                     .map((offre, index) => (
                       <tr key={index}>
                         <td>{offre.demande?.titre}</td>

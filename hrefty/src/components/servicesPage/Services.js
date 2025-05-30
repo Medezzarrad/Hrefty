@@ -3,7 +3,10 @@ import ReactPaginate from "react-paginate";
 import React, { useEffect, useState } from "react";
 import "../../style/servicesPage/Services.scss";
 import { useDispatch, useSelector } from "react-redux";
-import { categoryList, listServices } from "../../redux/Slices/pageServicesSlice";
+import {
+  categoryList,
+  demandesList,
+} from "../../redux/Slices/pageServicesSlice";
 
 const Pagination = ({ pageCount, onPageChange }) => {
   return (
@@ -25,17 +28,15 @@ const Services = () => {
   const dispatch = useDispatch();
 
   // lancer la liste des services
-  const services = useSelector((state) => state.services.listServices);
-  const [listServices, setListServices] = useState([]);
+  const servs = useSelector((state) => state.services.listServices);
+  const [listServ, setListServ] = useState([]);
   useEffect(() => {
-    dispatch(listServices()); // ← parentheses ici
+    dispatch(demandesList()); // ← parentheses ici
   }, [dispatch]);
   useEffect(() => {
-    setListServices(services || []);
-    console.log(services);
-  }, [services]);
-
-
+    setListServ(servs || []);
+    console.log(servs);
+  }, [servs]);
 
   // Pagination
   const [currentPage, setCurrentPage] = useState(0);
@@ -45,13 +46,14 @@ const Services = () => {
     setCurrentPage(selected);
   };
 
-  const displayedItems = listServices.slice(
+  const displayedItems = listServ.slice(
     currentPage * itemsPerPage,
     (currentPage + 1) * itemsPerPage
   );
 
   return (
     <div className="Services">
+    
       <div className="cards">
         {displayedItems.map((service, index) => (
           <Service
@@ -64,7 +66,7 @@ const Services = () => {
         ))}
       </div>
       <Pagination
-        pageCount={Math.ceil(listServices.length / itemsPerPage)}
+        pageCount={Math.ceil(listServ.length / itemsPerPage)}
         onPageChange={handlePageChange}
       />
     </div>
