@@ -14,7 +14,7 @@ export default () => {
     const [swiperInstance, setSwiperInstance] = useState(null);
   return (
     <div
-    className='bg-dark m-auto' style={{width: '500px'}}     
+    className='m-auto' style={{width: '500px'}}     
     onMouseEnter={() => swiperInstance.autoplay.stop()}  // Arrête autoplay
     onMouseLeave={() => swiperInstance.autoplay.start()} // Reprend autoplay
     >
@@ -24,15 +24,14 @@ export default () => {
         modules={[Navigation, Pagination, Scrollbar, A11y, Autoplay]}
         // spaceBetween={50}
         slidesPerView={1}
-        navigation
+        // navigation
         autoplay={{ delay: 2000, disableOnInteraction: false }}
         loop={true}
         pagination={{ clickable: true }}
         >
-            <SwiperSlide className='bg-danger'>Slide 1</SwiperSlide>
-            <SwiperSlide className='bg-info'>Slide 2</SwiperSlide>
-            <SwiperSlide className='bg-light'>Slide 3</SwiperSlide>
-            <SwiperSlide className='bg-success'>Slide 4</SwiperSlide>
+            <SwiperSlide  ><img className='img' src="imgs/ads/ads1.png" alt="" /></SwiperSlide>
+            <SwiperSlide><img className='img' src="imgs/ads/ads2.png" alt="" /></SwiperSlide>
+            <SwiperSlide><img className='img' src="imgs/ads/ads3.png" alt="" /></SwiperSlide>
         </Swiper>
     </div>
   );

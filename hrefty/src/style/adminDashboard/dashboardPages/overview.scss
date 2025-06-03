@@ -1,0 +1,80 @@
+$primaryColor: #088178;
+$secondaryColor: #4dc7b8;
+$secondaryHoverColor: #15696c;
+$titleColor: #1c797d;
+$textColor: #2f9d8d;
+$cardBackgroundColor: #e7e9f4;
+$backgroundColor: #f5f5f5;
+* {
+  padding: 0;
+  margin: 0;
+  box-sizing: border-box;
+}
+.Overview {
+  display: flex;
+  font-family: 'Tajawal';
+  flex-direction: column;
+  padding: 1rem 3rem;
+  gap: 2rem;
+  .statistiques {
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: repeat(4, 1fr);
+    background-color: $cardBackgroundColor;
+    padding: 1rem;
+    border-radius: 1rem;
+    .row {
+      flex-wrap: nowrap;
+      margin: auto;
+      padding: 1rem;
+      border-radius: 1rem;
+      color: white;
+      font-weight: 500;
+      p {
+        margin: 0;
+        width: fit-content;
+      }
+      span {
+        width: fit-content;
+      }
+      background-color: $primaryColor;
+    }
+  }
+  .ads{
+    background-color: $cardBackgroundColor;
+    padding: 1rem;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    .add_ads form{
+        padding: 1rem;
+        border-radius: 1rem;
+        background-color: $backgroundColor;
+        gap: 1rem;
+        display: flex;
+    }
+    .list_ads{
+        padding: 1rem;
+        border-radius: 1rem;
+        background-color: $backgroundColor;
+        text-align: center;
+        .img{
+            width: 30%;
+        }
+        .buttons{
+            // display: flex;
+            width: 20%;
+            // flex-direction: column;
+            button{
+                width: 100%;
+                
+            }
+        }
+        img{
+            margin: auto;
+            
+        }
+    }
+  }
+}

@@ -25,6 +25,7 @@ import RegisterClient from "./components/authPages/registerClient";
 import Techniciens from "./components/adminDashboard/dashboardPages/techniciens";
 import Demandes_offres from "./components/adminDashboard/dashboardPages/demandes_offres";
 import Overview from "./components/adminDashboard/dashboardPages/overview";
+import Profile from "./components/technicienProfile/profile";
 
 const Acceuil = () => {
   return (
@@ -92,7 +93,7 @@ const DashboardAdmin = () => {
 
 const RoleRoute = ({ allowedRole, children }) => {
   const user = JSON.parse(sessionStorage.getItem("user"));
-  if (allowedRole == 'admin') {
+  if (allowedRole == "admin") {
     return children;
   }
   if (!user || user.role !== allowedRole) {
@@ -117,9 +118,14 @@ const App = () => {
         <Route path="/register_technicien" element={<RegisterTechnicien />} />
         <Route path="/register_client" element={<RegisterClient />} />
         <Route path="/login" element={<Login />} />
-
-        <Route path="/admin" element={<DashboardAdmin />} />
-
+        <Route
+          path="/profile/:id"
+          element={
+            <RoleRoute allowedRole="client">
+              <Profile />
+            </RoleRoute>
+          }
+        />
         <Route
           path="/admin_panel"
           element={
@@ -128,11 +134,11 @@ const App = () => {
             </RoleRoute>
           }
         >
-          <Route path="overview" element={<Overview/>} />
-          <Route path="demandes_offres" element={<Demandes_offres/>} />
-          <Route path="techniciens" element={<Techniciens/>} />
-        </Route>²
-
+          <Route index element={<Overview />} />
+          <Route path="demandes_offres" element={<Demandes_offres />} />
+          <Route path="techniciens" element={<Techniciens />} />
+        </Route>
+        ²
         <Route
           path="/client_panel"
           element={
@@ -141,10 +147,9 @@ const App = () => {
             </RoleRoute>
           }
         >
-          <Route index element={<OverviewClient/>} />
+          <Route index element={<OverviewClient />} />
           <Route path="chat" element={<Chat />} />
         </Route>
-
         <Route
           path="/technicien_panel"
           element={

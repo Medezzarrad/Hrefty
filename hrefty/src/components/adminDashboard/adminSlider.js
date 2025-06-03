@@ -26,7 +26,7 @@ const AdminSlider = () => {
         <h1>الاسم</h1>
       </div>
       <div className="sliderLeft">
-        <NavLink to='/' className="btn">
+        <NavLink to='/admin_panel' className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faHome} className="ml-2" />
           </div>

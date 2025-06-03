@@ -34,4 +34,8 @@ class Artisan extends Model
     {
         return $this->belongsTo(User::class, 'idUser', 'id');
     }
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
 }

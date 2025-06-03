@@ -16,13 +16,17 @@ const OverviewClient = () => {
     dispatch(lastArtisans());
   }, [dispatch]);
   const lastArts = useSelector((state) => state.client.lastArtisans);
-  
+  console.log(lastArts);
+
   // lanver la liste des demandes
   useEffect(() => {
     dispatch(demandesList());
   }, [dispatch]);
   const listDemandes = useSelector((state) => state.client.listDemandes);
-  console.log(listDemandes);
+
+  const clientRating = (id) => {
+    window.location.href = `/profile/${id}`
+  };
 
   return (
     <div className="clientOverview">
@@ -31,7 +35,7 @@ const OverviewClient = () => {
         <div className="artisans">
           {lastArts &&
             lastArts.map((artisan) => (
-              <div className="artisan">
+              <div className="artisan" onClick={() => clientRating(artisan.idUser)}>
                 <img src="imgs/images.jpeg" alt="" />
                 <ul>
                   <li>
@@ -71,6 +75,7 @@ const OverviewClient = () => {
       </div>
 
       <div className="demandesList">
+        <h1 className="title">الطلبلات المعلقة</h1>
         {listDemandes &&
           listDemandes
             .filter((demande) => demande.status == "en_attente")
@@ -221,127 +226,129 @@ const OverviewClient = () => {
           </div>
         </div>
         <div className="accordion-item">
-  <h2 className="accordion-header">
-    <button
-      className="accordion-button collapsed"
-      type="button"
-      data-bs-toggle="collapse"
-      data-bs-target="#flush-collapseTwo"
-      aria-expanded="false"
-      aria-controls="flush-collapseTwo"
-    >
-      العروض في الانتظار (للطلبات الجارية)
-    </button>
-  </h2>
-  <div
-    id="flush-collapseTwo"
-    className="accordion-collapse collapse show"
-    data-bs-parent="#accordionFlushExample"
-  >
-    {listDemandes &&
-      listDemandes
-        .filter((demande) => demande.status === "en_attente")
-        .map((demande) => {
-          const offresEnAttente = demande.offres?.filter(
-            (offre) => offre.statut === "en attente"
-          );
+          <h2 className="accordion-header">
+            <button
+              className="accordion-button collapsed"
+              type="button"
+              data-bs-toggle="collapse"
+              data-bs-target="#flush-collapseTwo"
+              aria-expanded="false"
+              aria-controls="flush-collapseTwo"
+            >
+              العروض في الانتظار (للطلبات الجارية)
+            </button>
+          </h2>
+          <div
+            id="flush-collapseTwo"
+            className="accordion-collapse collapse show"
+            data-bs-parent="#accordionFlushExample"
+          >
+            {listDemandes &&
+              listDemandes
+                .filter((demande) => demande.status === "en_attente")
+                .map((demande) => {
+                  const offresEnAttente = demande.offres?.filter(
+                    (offre) => offre.statut === "en attente"
+                  );
 
-          if (!offresEnAttente || offresEnAttente.length === 0) {
-            return null;
-          }
+                  if (!offresEnAttente || offresEnAttente.length === 0) {
+                    return null;
+                  }
 
-          return (
-            <div className="accordion-body" key={demande.id}>
-              <h5 className="mb-3">الطلب: {demande.titre}</h5>
-              <table className="table table-bordered text-center table-hover m-0">
-                <thead>
-                  <tr>
-                    <th>وصف العرض</th>
-                    <th>الحرفي</th>
-                    <th>ميزانية العرض</th>
-                    <th>الاجراءات</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {offresEnAttente.map((offre, index) => (
-                    <tr key={index}>
-                      <td>{offre.description || "—"}</td>
-                      <td>{offre.artisan?.nom || "—"}</td>
-                      <td>{offre.montant || "—"}</td>
-                      <td>
-                        <Dropdown>
-                          <Dropdown.Toggle variant="secondary">
-                            المزيد
-                          </Dropdown.Toggle>
-                          <Dropdown.Menu variant="dark">
-                            <Dropdown.Item>
-                              <button
-                                onClick={() => setShow(true)}
-                                className="btn"
-                              >
-                                عرض تفاصيل العرض
-                              </button>
-                              <Modal
-                                show={show}
-                                onHide={() => setShow(false)}
-                                centered
-                              >
-                                <Modal.Header closeButton>
-                                  <Modal.Title>تفاصيل العرض</Modal.Title>
-                                </Modal.Header>
-                                <Modal.Body>
-                                  <ul className="list-group list-group-flush">
-                                    <li className="list-group-item">
-                                      <span>عنوان الطلب:</span>{" "}
-                                      {demande.titre}
-                                    </li>
-                                    <li className="list-group-item">
-                                      <span>وصف العرض:</span>{" "}
-                                      {offre.description}
-                                    </li>
-                                    <li className="list-group-item">
-                                      <span>ميزانية العرض:</span>{" "}
-                                      {offre.montant}
-                                    </li>
-                                    <li className="list-group-item">
-                                      <span>الحرفي:</span>{" "}
-                                      {offre.artisan?.nom}
-                                    </li>
-                                    <li className="list-group-item">
-                                      <span>تاريخ رفع العرض:</span>{" "}
-                                      {offre.dateCreation}
-                                    </li>
-                                  </ul>
-                                </Modal.Body>
-                                <Modal.Footer>
-                                  <Button
-                                    variant="secondary"
-                                    onClick={() => setShow(false)}
-                                  >
-                                    إغلاق
-                                  </Button>
-                                </Modal.Footer>
-                              </Modal>
-                            </Dropdown.Item>
-                            <Dropdown.Item className="btn">
-                              <button className="btn">تعليق العرض</button>
-                            </Dropdown.Item>
-                            <Dropdown.Item className="btn">
-                              <button className="btn">رفض العرض</button>
-                            </Dropdown.Item>
-                          </Dropdown.Menu>
-                        </Dropdown>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-          );
-        })}
-  </div>
-</div>
-
+                  return (
+                    <div className="accordion-body" key={demande.id}>
+                      <table className="table table-bordered text-center table-hover m-0">
+                        <thead>
+                          <tr>
+                            <th>وصف العرض</th>
+                            <th>الحرفي</th>
+                            <th>ميزانية العرض</th>
+                            <th>الاجراءات</th>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {offresEnAttente.map((offre, index) => (
+                            <tr key={index}>
+                              <td>{offre.description || "—"}</td>
+                              <td>{offre.artisan?.nom || "—"}</td>
+                              <td>{offre.montant || "—"}</td>
+                              <td>
+                                <Dropdown>
+                                  <Dropdown.Toggle variant="secondary">
+                                    المزيد
+                                  </Dropdown.Toggle>
+                                  <Dropdown.Menu variant="dark">
+                                    <Dropdown.Item>
+                                      <button
+                                        onClick={() => setShow(true)}
+                                        className="btn"
+                                      >
+                                        عرض تفاصيل العرض
+                                      </button>
+                                      <Modal
+                                        show={show}
+                                        onHide={() => setShow(false)}
+                                        centered
+                                      >
+                                        <Modal.Header closeButton>
+                                          <Modal.Title>
+                                            تفاصيل العرض
+                                          </Modal.Title>
+                                        </Modal.Header>
+                                        <Modal.Body>
+                                          <ul className="list-group list-group-flush">
+                                            <li className="list-group-item">
+                                              <span>عنوان الطلب:</span>{" "}
+                                              {demande.titre}
+                                            </li>
+                                            <li className="list-group-item">
+                                              <span>وصف العرض:</span>{" "}
+                                              {offre.description}
+                                            </li>
+                                            <li className="list-group-item">
+                                              <span>ميزانية العرض:</span>{" "}
+                                              {offre.montant}
+                                            </li>
+                                            <li className="list-group-item">
+                                              <span>الحرفي:</span>{" "}
+                                              {offre.artisan?.nom}
+                                            </li>
+                                            <li className="list-group-item">
+                                              <span>تاريخ رفع العرض:</span>{" "}
+                                              {offre.dateCreation}
+                                            </li>
+                                          </ul>
+                                        </Modal.Body>
+                                        <Modal.Footer>
+                                          <Button
+                                            variant="secondary"
+                                            onClick={() => setShow(false)}
+                                          >
+                                            إغلاق
+                                          </Button>
+                                        </Modal.Footer>
+                                      </Modal>
+                                    </Dropdown.Item>
+                                    <Dropdown.Item className="btn">
+                                      <button className="btn">
+                                        تعليق العرض
+                                      </button>
+                                    </Dropdown.Item>
+                                    <Dropdown.Item className="btn">
+                                      <button className="btn">رفض العرض</button>
+                                    </Dropdown.Item>
+                                  </Dropdown.Menu>
+                                </Dropdown>
+                              </td>
+                            </tr>
+                          ))}
+                        </tbody>
+                      </table>
+                    </div>
+                  );
+                })}
+          </div>
+        </div>
       </div>
     </div>
   );

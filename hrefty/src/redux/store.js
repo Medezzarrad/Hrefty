@@ -6,6 +6,7 @@ import artisansReducer from "./Slices/pageArtisansSlice";
 import authReducer from "./Slices/authSlice";
 import chatReducer from "./Slices/chatSlice";
 import adminReducer from "./Slices/adminSlice";
+import profileReducer from "./Slices/profileSlice";
 
 export const store = configureStore({
   reducer: {
@@ -16,6 +17,7 @@ export const store = configureStore({
     auth: authReducer,
     chat: chatReducer,
     admin: adminReducer,
+    profile: profileReducer,
   },
 });
 // mmmmmmmmmmm

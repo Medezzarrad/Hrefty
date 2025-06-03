@@ -11,7 +11,7 @@ const SignCards = () => {
         </div>
         <div className="signCardsBottom">
           <SignCard
-              signCardImage={'imgs/images.jpeg'}
+              signCardImage={'imgs/personnes/client1.jpg'}
               signCardTitle={"هل تبحث عن مهني؟"}
               signCardParagraph={
               "هل لديك عطب منزلي (مشكل كهربائي, تسريب ماء...) وتبحث عن محترف لإصلاح المشكل إختر فردا من أفراد Hrefty.com"
@@ -20,7 +20,7 @@ const SignCards = () => {
               buttonPath={"/register_client"}
           />
           <SignCard
-              signCardImage={'imgs/images.jpeg'}
+              signCardImage={'imgs/personnes/technicien1.jpg'}
               signCardTitle={"هل انت شخص مهني؟"}
               signCardParagraph={
               "هل تمتلك حرفة او مهنة وتبحث عن مصدر دخل إضافي. قم بالإنضمام إلى فريق عمل Hrefty.com"

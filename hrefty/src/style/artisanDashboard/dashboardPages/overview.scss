@@ -13,9 +13,11 @@ $backgroundColor: #f5f5f5;
 .artisanOverview {
   padding: 0 !important;
   margin: 0 !important;
+
   .header {
     margin: 2rem 3rem;
     padding: 0 1rem;
+    position: relative;
     border-radius: 1rem;
     display: grid;
     gap: 1rem;
@@ -45,13 +47,13 @@ $backgroundColor: #f5f5f5;
         li {
           margin: 5px 0;
           font-size: 18px;
-          .icon{
+          .icon {
             color: $primaryColor;
           }
-          .icon-actif{
+          .icon-actif {
             color: green;
           }
-          .icon-inactif{
+          .icon-inactif {
             color: red;
           }
         }
@@ -81,10 +83,23 @@ $backgroundColor: #f5f5f5;
       }
     }
     .header-left {
-      padding: 1rem 0;
-      h1 {
-        color: $primaryColor;
-        text-align: center;
+      padding: 2rem 0 1rem;
+      // position: relative;
+      .title-left,
+      .title-right {
+        position: absolute;
+        top: -1rem;
+        background-color: $secondaryColor;
+        color: white;
+        padding: 10px;
+        border-radius: 10px;
+        font-size: 20px;
+      }
+      .title-left {
+        left: 1rem;
+      }
+      .title-right {
+        right: 1rem;
       }
       .demandesAccept {
         display: flex;
@@ -92,13 +107,19 @@ $backgroundColor: #f5f5f5;
         scrollbar-width: none;
         -ms-overflow-style: none;
         overflow-y: hidden;
+        direction: ltr;
         flex-wrap: nowrap;
         .demande::-webkit-scrollbar {
           display: none;
         }
         .demande {
           background-color: $backgroundColor;
-          box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px, rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px, rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px, rgba(42, 51, 70, 0.04) 0px 6px 6px -3px, rgba(14, 63, 126, 0.04) 0px 12px 12px -6px, rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
+          box-shadow: rgba(14, 63, 126, 0.04) 0px 0px 0px 1px,
+            rgba(42, 51, 69, 0.04) 0px 1px 1px -0.5px,
+            rgba(42, 51, 70, 0.04) 0px 3px 3px -1.5px,
+            rgba(42, 51, 70, 0.04) 0px 6px 6px -3px,
+            rgba(14, 63, 126, 0.04) 0px 12px 12px -6px,
+            rgba(14, 63, 126, 0.04) 0px 24px 24px -12px;
           margin: 1rem 0 1rem 1rem;
           border-radius: 1rem;
           flex: 0 0 auto;
@@ -134,15 +155,25 @@ $backgroundColor: #f5f5f5;
     }
   }
   .orderList {
+    position: relative;
     margin: 2rem 3rem;
-    padding: 1rem;
+    padding: 3rem 1rem 1rem;
     background-color: $cardBackgroundColor;
     border-radius: 1rem;
-    table{
+    .title {
+      position: absolute;
+      top: -1rem;
+      background-color: $secondaryColor;
+      color: white;
+      padding: 10px;
+      border-radius: 10px;
+      font-size: 20px;
+    }
+    table {
       margin: 0 !important;
-      tbody{
-        tr{
-          td{
+      tbody {
+        tr {
+          td {
             height: 30px;
             line-height: 30px;
             align-items: center;
@@ -154,6 +185,43 @@ $backgroundColor: #f5f5f5;
       background-color: $secondaryColor !important;
       color: white;
       font-weight: 500;
+    }
+  }
+}
+.modal-header {
+  justify-content: space-between !important;
+  color: $titleColor !important;
+  .btn-close {
+    margin: 0 !important;
+  }
+}
+.modal-body {
+  // .clientInfo {
+  ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    li {
+      font-weight: 500;
+      border-bottom: 1px solid silver;
+      padding: 10px;
+      span {
+        color: $primaryColor;
+      }
+    }
+  }
+}
+.modal {
+  font-family: "Tajawal" !important;
+}
+.modal-footer {
+  button:nth-child(2) {
+    background-color: $secondaryColor;
+    border: none !important;
+    color: #fff;
+    &:hover {
+      background-color: $primaryColor;
+      color: #fff;
     }
   }
 }

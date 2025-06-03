@@ -16,7 +16,7 @@ class DemandeController extends Controller
             $demandes = Demande::with([
                 'category',
                 'offres.artisan.specialite',
-                "client"
+                "client.user"
             ])->get();
             return response()->json([
                 'success' => true,

@@ -18,6 +18,10 @@ class Client extends Model
         'photo',
         'idUser',
     ];
+    public function evaluations()
+    {
+        return $this->hasMany(Evaluation::class);
+    }
     public function demandes()
     {
         return $this->hasMany(Demande::class, 'idClient', 'id');

@@ -16,7 +16,7 @@ import {
 } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { useDispatch, useSelector } from "react-redux";
-import { useNavigate } from 'react-router-dom';
+import { useNavigate } from "react-router-dom";
 import {
   addOffre,
   demandesList,
@@ -46,11 +46,11 @@ const OverviewTechnicien = () => {
   const navigate = useNavigate();
   const user = JSON.parse(sessionStorage.getItem("user"));
   const artisanInfo = useSelector((state) => state.artisan.artisanInfo);
-  console.log(artisanInfo)
+  console.log(artisanInfo);
   const listOffres = useSelector((state) => state.artisan.listOffres);
-  console.log(listOffres)
+  console.log(listOffres);
   const listDemandes = useSelector((state) => state.artisan.listDemandes);
-  console.log(listDemandes)
+  console.log(listDemandes);
   const conversations = useSelector((state) => state.chat.conversations);
 
   useEffect(() => {
@@ -63,17 +63,14 @@ const OverviewTechnicien = () => {
 
   const handleClientShow = (clientId) => {
     handleShow();
-    for (const artisan of listOffres) {
-      for (const offre of artisan.offres) {
-        if (offre.demande?.client?.id === clientId) {
-          setClient(offre.demande.client);
-          return;
-        }
-      }
+    const demande = listDemandes.find((d) => d.client?.id === clientId);
+    if (demande) {
+      const { nom, telephone, user } = demande.client;
+      setClient({ nom, telephone, email: user.email });
     }
   };
   const handleAddOffre = async (idDmnd) => {
-    if(artisanInfo.artisan.status == 'actif'){
+    if (artisanInfo.artisan.status == "actif") {
       const newFormInputs = {
         ...formInputs,
         idDemande: idDmnd,
@@ -82,10 +79,9 @@ const OverviewTechnicien = () => {
       setFormInputs(newFormInputs);
       dispatch(addOffre(newFormInputs));
       setOffreAdd(false);
-
-    }else{
-      alert('your account is inactif')
-      setOffreAdd(false)
+    } else {
+      alert("your account is inactif");
+      setOffreAdd(false);
     }
   };
 
@@ -182,7 +178,8 @@ const OverviewTechnicien = () => {
         </div>
 
         <div className="header-left">
-          <h1>الطلبات المقبولة</h1>
+          <h1 className="title-right">الاحصائيات</h1>
+          <h1 className="title-left">الطلبات المقبولة</h1>
           <div className="demandesAccept">
             {listOffres
               .filter((artisan) => artisan.user?.id === artisanInfo.id)
@@ -233,6 +230,7 @@ const OverviewTechnicien = () => {
 
       {/* Liste des demandes programmées à Fès sans offre acceptable */}
       <div className="orderList">
+        <h1 className="title">الطلبات ذات صلة</h1>
         <table className="table table-bordered text-center table-hover m-0">
           <thead>
             <tr>
@@ -248,7 +246,9 @@ const OverviewTechnicien = () => {
           <tbody>
             {listDemandes &&
               listDemandes.map((demande, index) => {
-                const specialite = demande.category?.nom === artisanInfo?.artisan?.specialite?.nom;
+                const specialite =
+                  demande.category?.nom ===
+                  artisanInfo?.artisan?.specialite?.nom;
                 const ville = demande.ville === artisanInfo?.artisan?.ville;
                 const hasAcceptableOffre = demande.offres?.some(
                   (offre) => offre.statut === "acceptable"
@@ -288,7 +288,7 @@ const OverviewTechnicien = () => {
                           centered
                         >
                           <Modal.Header closeButton>
-                            <Modal.Title>رفع طلب</Modal.Title>
+                            <Modal.Title>ارسال عرض</Modal.Title>
                           </Modal.Header>
                           <Modal.Body>
                             <ul className="list-group list-group-flush">
@@ -347,6 +347,7 @@ const OverviewTechnicien = () => {
 
       {/* Liste des offres acceptées */}
       <div className="orderList">
+        <h1 className="title">العروض المرسلة</h1>
         <table className="table table-bordered text-center table-hover m-0">
           <thead>
             <tr>
@@ -406,14 +407,19 @@ const OverviewTechnicien = () => {
           <Modal.Title>معلومات العميل</Modal.Title>
         </Modal.Header>
         <Modal.Body>
-          <div className="clientInfo">
-            <img src="dd" alt="" />
-            <ul>
-              <li>الاسم: {client.nom}</li>
-              <li>الهاتف: {client.telephone}</li>
-              <li>الايميل: {client.email}</li>
-            </ul>
-          </div>
+          <img src="dd" alt="" />
+          <ul>
+            <li>
+              <span>الاسم</span> : {client.nom}
+            </li>
+            <li>
+              <span>الهاتف</span> : {client.telephone}
+            </li>
+            <li>
+              <span>الايميل</span> : {client.email}
+            </li>
+          </ul>
+          <div className="clientInfo"></div>
         </Modal.Body>
         <Modal.Footer>
           <button className="btn" onClick={handleClose}>

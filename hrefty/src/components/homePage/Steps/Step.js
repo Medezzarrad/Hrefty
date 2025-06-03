@@ -1,11 +1,11 @@
 import React from "react";
 import "..//..//..//style/homePage/Steps/Step.scss";
 
-const Step = ({ Titre, Steps }) => {
+const Step = ({ Titre, Steps, Image }) => {
   return (
     <div className="Step">
       <div className="img">
-        <img src="imgs/images.jpeg" />
+        <img src={Image} />
       </div>
       <div className="content">
         <h1>{Titre}</h1>

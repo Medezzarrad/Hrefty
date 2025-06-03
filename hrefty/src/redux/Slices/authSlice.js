@@ -12,8 +12,9 @@ export const register = createAsyncThunk(
       });
       const response = await axios.post(
         "http://localhost:8000/api/register",
-        userData
-        , { withCredentials: true });
+        userData,
+        { withCredentials: true }
+      );
 
       return response.data;
     } catch (err) {
@@ -31,8 +32,9 @@ export const login = createAsyncThunk(
       });
       const response = await axios.post(
         "http://localhost:8000/api/login",
-        credentials
-        , { withCredentials: true });
+        credentials,
+        { withCredentials: true }
+      );
 
       return response.data;
     } catch (err) {
@@ -67,8 +69,8 @@ export const logout = createAsyncThunk(
 const authSlice = createSlice({
   name: "auth",
   initialState: {
-    user: sessionStorage.getItem('user') || null,
-    token: sessionStorage.getItem('token') || null,
+    user: sessionStorage.getItem("user") || null,
+    token: sessionStorage.getItem("token") || null,
     status: "idle",
     error: null,
   },
@@ -88,6 +90,9 @@ const authSlice = createSlice({
         sessionStorage.setItem("user", JSON.stringify(action.payload.user));
         sessionStorage.setItem("token", action.payload.token);
         state.status = "succeeded";
+        action.payload.user.role == "client"
+          ? (window.location.href = "/client_panel")
+          : (window.location.href = "/technicien_panel");
       })
       .addCase(fetchUser.fulfilled, (state, action) => {
         state.user = action.payload;

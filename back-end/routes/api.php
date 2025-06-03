@@ -4,6 +4,7 @@ use App\Http\Controllers\ArtisanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConversationController;
 use App\Http\Controllers\DemandeController;
+use App\Http\Controllers\EvaluationController;
 use App\Http\Controllers\MessageController;
 use App\Http\Controllers\OffreAcceptController;
 use App\Http\Controllers\OffreController;
@@ -22,15 +23,16 @@ Route::controller(DemandeController::class)->group(function () {
     Route::delete('/demande/{id}', 'destroy');
     Route::get('/demande', 'index');
 });
-// Route::controller(OffreAcceptController::class)->group(function () {
-//     Route::options('/offre_accept', function () {
-//         return response('', 200)
-//             ->header('Access-Control-Allow-Origin', 'http://localhost:3000')
-//             ->header('Access-Control-Allow-Methods', 'POST, PUT, DELETE, GET, OPTIONS')
-//             ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
-//     });
-//     Route::get('/offre_accept', 'index');
-// });
+Route::controller(EvaluationController::class)->group(function () {
+    Route::options('/evaluation', function () {
+        return response('', 200)
+            ->header('Access-Control-Allow-Origin', 'http://localhost:3000')
+            ->header('Access-Control-Allow-Methods', 'POST, PUT, DELETE, GET, OPTIONS')
+            ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
+    });
+    Route::get('/evaluation', 'index');
+    Route::post('/evaluation', 'store');
+});
 Route::controller(SpecialiteController::class)->group(function () {
     Route::options('/specialite', function () {
         return response('', 200)
