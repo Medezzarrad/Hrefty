@@ -21,6 +21,7 @@ import {
   addOffre,
   demandesList,
   offresList,
+  statistiques,
   technicienInfo,
 } from "../../../redux/Slices/artisanSlice";
 import {
@@ -28,6 +29,7 @@ import {
   fetchMessages,
   setSelectedConversation,
 } from "../../../redux/Slices/chatSlice";
+import { moyenne } from "../../../redux/Slices/profileSlice";
 
 const OverviewTechnicien = () => {
   const [show, setShow] = useState(false);
@@ -35,7 +37,7 @@ const OverviewTechnicien = () => {
   const [formInputs, setFormInputs] = useState({
     description: "",
     montant: 0,
-    statut: "en attente",
+    statut: "en_attente",
     idDemande: 0,
     idArtisan: 0,
   });
@@ -46,11 +48,8 @@ const OverviewTechnicien = () => {
   const navigate = useNavigate();
   const user = JSON.parse(sessionStorage.getItem("user"));
   const artisanInfo = useSelector((state) => state.artisan.artisanInfo);
-  console.log(artisanInfo);
   const listOffres = useSelector((state) => state.artisan.listOffres);
-  console.log(listOffres);
   const listDemandes = useSelector((state) => state.artisan.listDemandes);
-  console.log(listDemandes);
   const conversations = useSelector((state) => state.chat.conversations);
 
   useEffect(() => {
@@ -61,12 +60,17 @@ const OverviewTechnicien = () => {
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
 
+  useEffect(() => {
+    dispatch(statistiques(artisanInfo.artisan.id));
+  }, []);
+  const statis = useSelector((state) => state.artisan.statis);
+
   const handleClientShow = (clientId) => {
     handleShow();
     const demande = listDemandes.find((d) => d.client?.id === clientId);
     if (demande) {
-      const { nom, telephone, user } = demande.client;
-      setClient({ nom, telephone, email: user.email });
+      const { nom, telephone, user, photo } = demande.client;
+      setClient({ nom, telephone, email: user.email, photo });
     }
   };
   const handleAddOffre = async (idDmnd) => {
@@ -77,6 +81,7 @@ const OverviewTechnicien = () => {
         idArtisan: artisanInfo?.artisan?.id,
       };
       setFormInputs(newFormInputs);
+      console.log(newFormInputs)
       dispatch(addOffre(newFormInputs));
       setOffreAdd(false);
     } else {
@@ -113,18 +118,19 @@ const OverviewTechnicien = () => {
 
     dispatch(fetchMessages(conv.id));
 
-    // ✅ Navigation recommandée avec React Router
-    navigate("/technicien_panel/chat"); // Assure-toi d'avoir useNavigate()
-
-    // ❌ Sinon, navigation forcée (rechargement de page complet)
-    // window.location.href = 'http://localhost:3000/technicien_panel/chat';
+    navigate("/technicien_panel/chat");
   };
+
+  useEffect(() => {
+    dispatch(moyenne(artisanInfo.id));
+  }, []);
+  const moy = useSelector((state) => state.profile.moyenne);
 
   return (
     <div className="artisanOverview">
       <div className="header">
-        <div className="profile">
-          <img src="imgs/images.jpeg" alt="" />
+        <div  onClick={()=>{window.location.href = `/profile/${artisanInfo.id}`}} className="profile">
+          <img src={`http://localhost:8000/${artisanInfo.artisan?.photo}`} />
           <ul>
             <li>
               <FontAwesomeIcon className="icon" icon={faUser} />{" "}
@@ -144,37 +150,41 @@ const OverviewTechnicien = () => {
             </li>
             <li className="stars">
               {[...Array(5)].map((_, i) => (
-                <FontAwesomeIcon key={i} icon={faStar} />
+                <FontAwesomeIcon
+                  key={i}
+                  icon={faStar}
+                  style={{ color: i < moy ? "#088178" : "#e4e5e9" }}
+                />
               ))}
             </li>
           </ul>
         </div>
 
         <div className="statistiques">
-          <div className="row">
+          {/* <div className="row">
             <p>
               <FontAwesomeIcon icon={faClipboardCheck} /> الطلبات النشطة:
               <span>0</span>
             </p>
-          </div>
+          </div> */}
           <div className="row">
             <p>
               <FontAwesomeIcon icon={faPaperPlane} /> العروض المرسلة:
-              <span>0</span>
+              <span>{statis.totalOffres}</span>
             </p>
           </div>
           <div className="row">
             <p>
               <FontAwesomeIcon icon={faBriefcase} /> الطلبات المنجزة:
-              <span>0</span>
+              <span>{statis.totalDemandeFaire}</span>
             </p>
           </div>
-          <div className="row">
+          {/* <div className="row">
             <p>
               <FontAwesomeIcon icon={faComment} /> الرسائل المعلقة:
               <span>0</span>
             </p>
-          </div>
+          </div> */}
         </div>
 
         <div className="header-left">
@@ -194,7 +204,10 @@ const OverviewTechnicien = () => {
                     <div className="demande" key={idx}>
                       <ul>
                         <li>
-                          <img src="imgs/images.jpeg" alt="" />
+                          <img
+                            src={`http://localhost:8000/${offre.demande?.photo}`}
+                            alt=""
+                          />
                         </li>
                         <li>
                           <span>المشكل: </span>
@@ -234,13 +247,13 @@ const OverviewTechnicien = () => {
         <table className="table table-bordered text-center table-hover m-0">
           <thead>
             <tr>
-              <th>الصورة</th>
-              <th>المشكل</th>
-              <th>الوصف</th>
-              <th>الميزانية</th>
-              <th>الموقع</th>
-              <th>معلومات العميل</th>
-              <th>المزيد</th>
+              <th style={{whiteSpace: 'nowrap'}}>الصورة</th>
+              <th style={{whiteSpace: 'nowrap'}}>المشكل</th>
+              <th style={{whiteSpace: 'nowrap'}}>الوصف</th>
+              <th style={{whiteSpace: 'nowrap'}}>الميزانية</th>
+              <th style={{whiteSpace: 'nowrap'}}>الموقع</th>
+              <th style={{whiteSpace: 'nowrap'}}>معلومات العميل</th>
+              <th style={{whiteSpace: 'nowrap'}}>المزيد</th>
             </tr>
           </thead>
           <tbody>
@@ -258,14 +271,14 @@ const OverviewTechnicien = () => {
                   return (
                     <tr key={index}>
                       <td>
-                        <img
-                          src={`imgs/${demande.photo || "images.jpeg"}`}
+                        <img style={{width: "150px", objectFit: 'cover'}}
+                          src={`http://localhost:8000/${demande.photo}`}
                           alt=""
                         />
                       </td>
                       <td>{demande.titre}</td>
                       <td>{demande.description}</td>
-                      <td>{demande.budget}</td>
+                      <td>{demande.budget} درهم</td>
                       <td>{demande.adresse}</td>
                       <td>
                         <button
@@ -276,9 +289,9 @@ const OverviewTechnicien = () => {
                         </button>
                       </td>
                       <td>
-                        <Button onClick={() => setOffreAdd(true)}>
+                        <button className="btn" onClick={() => setOffreAdd(true)}>
                           ارسال عرض
-                        </Button>
+                        </button>
 
                         <Modal
                           size="lg"
@@ -406,8 +419,18 @@ const OverviewTechnicien = () => {
         <Modal.Header closeButton>
           <Modal.Title>معلومات العميل</Modal.Title>
         </Modal.Header>
-        <Modal.Body>
-          <img src="dd" alt="" />
+        <Modal.Body className="d-flex flex-column">
+          <img
+            style={{
+              width: "200px",
+              height: "200px",
+              borderRadius: "50%",
+              margin: "auto",
+              objectFit: "cover"
+            }}
+            src={`http://localhost:8000/${client.photo}`}
+            alt=""
+          />
           <ul>
             <li>
               <span>الاسم</span> : {client.nom}

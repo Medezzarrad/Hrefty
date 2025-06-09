@@ -11,10 +11,12 @@ export const technicienInfo = createAsyncThunk(
   }
 );
 
-// export const offresList = createAsyncThunk("artisan/offresList", async () => {
-//   const response = await axios.get(`${url}/artisan`);
-//   return response.data;
-// });
+export const moyenne = createAsyncThunk("profile/moyenne", async (id) => {
+  const response = await axios.post(`${url}/evaluation/moyenne`, {
+    userId: id,
+  });
+  return response.data;
+});
 
 export const addEvaluation = createAsyncThunk(
   "profile/addEvaluation",
@@ -56,6 +58,7 @@ export const evaluationsList = createAsyncThunk(
 const initialState = {
   listEvaluations: [],
   technicienInfo: {},
+  moyenne: 0,
   status: "",
   erreur: "",
 };
@@ -72,8 +75,20 @@ const profileSlider = createSlice({
       .addCase(addEvaluation.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.listEvaluations = action.payload;
+        window.location.reload();
       })
       .addCase(addEvaluation.rejected, (state) => {
+        state.status = "rejected";
+      })
+
+      .addCase(moyenne.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(moyenne.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.moyenne = action.payload.data;
+      })
+      .addCase(moyenne.rejected, (state) => {
         state.status = "rejected";
       })
 

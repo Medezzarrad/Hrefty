@@ -3,10 +3,38 @@
 namespace App\Http\Controllers;
 
 use App\Models\Artisan;
+use App\Models\Demande;
+use App\Models\Offre;
 use Illuminate\Http\Request;
 
 class ArtisanController extends Controller
 {
+    public function statistiques(Request $request)
+    {
+        try {
+            $artisanId = $request->input('artisanId');
+
+            $totalOffres = Offre::where('idArtisan', $artisanId)->count();
+            $totalDemandeFaire = Offre::where('idArtisan', $artisanId)
+                ->where('statut', 'acceptable')
+                ->count();
+            return response()->json([
+                'success' => true,
+                'message' => 'Statistiques list successfully retrieved.',
+                'data' => [
+                    'totalOffres' => $totalOffres,
+                    'totalDemandeFaire' => $totalDemandeFaire,
+                ]
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving statistiques.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -113,31 +141,30 @@ class ArtisanController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-public function destroy(string $id)
-{
-    try {
-        $technicien = Artisan::find($id);
-        if (!$technicien) {
+    public function destroy(string $id)
+    {
+        try {
+            $technicien = Artisan::find($id);
+            if (!$technicien) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Technicien not found.'
+                ], 404);
+            }
+
+            $technicien->delete();
+
+            return response()->json([
+                'success' => true,
+                'message' => 'Technicien deleted successfully.',
+                'data' => Artisan::all()
+            ]);
+        } catch (\Throwable $th) {
             return response()->json([
                 'success' => false,
-                'message' => 'Technicien not found.'
-            ], 404);
+                'message' => 'Error deleting the technicien.',
+                'error' => $th->getMessage()
+            ], 500);
         }
-
-        $technicien->delete();
-
-        return response()->json([
-            'success' => true,
-            'message' => 'Technicien deleted successfully.',
-            'data' => Artisan::all()
-        ]);
-    } catch (\Throwable $th) {
-        return response()->json([
-            'success' => false,
-            'message' => 'Error deleting the technicien.',
-            'error' => $th->getMessage()
-        ], 500);
     }
-}
-
 }

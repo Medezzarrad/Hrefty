@@ -44,10 +44,37 @@ export const deleteOffre = createAsyncThunk("admin/deleteOffre", async (id) => {
   const response = await axios.delete(`http://localhost:8000/api/offre/${id}`);
   return response.data;
 });
+export const addAds = createAsyncThunk("admin/addAds", async (formData) => {
+  const response = await axios.post("http://localhost:8000/api/ads", formData);
+  return response.data;
+});
+export const updateAds = createAsyncThunk(
+  "admin/updateAds",
+  async ({ id, etat }) => {
+    const data = {
+      actif: etat == "actif" ? true : false,
+    };
+    const response = await axios.put(
+      `http://localhost:8000/api/ads/${id}`,
+      data
+    );
+    return response.data.data;
+  }
+);
+
+export const deleteAds = createAsyncThunk("admin/deleteAds", async (id) => {
+  const response = await axios.delete(`http://localhost:8000/api/ads/${id}`);
+  return response.data;
+});
+export const listAds = createAsyncThunk("admin/listAds", async () => {
+  const response = await axios.get("http://localhost:8000/api/ads");
+  return response.data;
+});
 
 const initialState = {
   TechniciensProfiles: [],
   demandeOffres: [],
+  ads: [],
   status: "",
   erreur: "",
 };
@@ -80,6 +107,55 @@ const adminSlider = createSlice({
         );
       })
       .addCase(listTechniciens.rejected, (state) => {
+        state.status = "rejected";
+      })
+
+      .addCase(addAds.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(addAds.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.ads.push(action.payload.data);
+        window.location.href = "/admin_panel";
+      })
+      .addCase(addAds.rejected, (state, action) => {
+        state.status = "rejected";
+      })
+
+      .addCase(listAds.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(listAds.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.ads = action.payload.data;
+      })
+      .addCase(listAds.rejected, (state) => {
+        state.status = "rejected";
+      })
+
+      .addCase(updateAds.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(updateAds.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.ads = state.ads.map((ad) =>
+          ad.link === action.payload.link && ad.image === action.payload.image
+            ? action.payload
+            : ad
+        );
+      })
+      .addCase(updateAds.rejected, (state) => {
+        state.status = "rejected";
+      })
+
+      .addCase(deleteAds.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(deleteAds.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.ads = state.ads.filter((ad) => ad.id !== action.payload.data.id);
+      })
+      .addCase(deleteAds.rejected, (state) => {
         state.status = "rejected";
       })
 

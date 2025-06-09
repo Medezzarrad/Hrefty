@@ -19,6 +19,8 @@ class AuthController extends Controller
             'role' => 'required|in:admin,client,technicien',
         ]);
 
+        $imageName = null;
+
         switch ($request->role) {
             case 'technicien':
                 $request->validate([
@@ -30,10 +32,15 @@ class AuthController extends Controller
                     'ville' => 'required|string',
                     'idSpecialite' => 'required|integer',
                     'telephone' => 'required|string',
-                    'photo' => 'required|string',
+                    'photo' => 'required|image|mimes:jpg,png,jpeg',
                     'email' => 'required|string|email|unique:users',
                     'password' => 'required|string|min:6',
                 ]);
+                if ($request->hasFile('photo')) {
+                    $image = $request->file('photo');
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $image->move(public_path('uploads/techniciensPhoto'), $imageName);
+                }
                 break;
 
             case 'admin':
@@ -48,10 +55,15 @@ class AuthController extends Controller
                     'genre' => 'required|in:homme,femme',
                     'telephone' => 'required|string',
                     'ville' => 'required|string',
-                    'photo' => 'string',
+                    'photo' => 'required|image|mimes:jpg,png,jpeg',
                     'email' => 'required|string|email|unique:users',
                     'password' => 'required|string|min:6',
                 ]);
+                if ($request->hasFile('photo')) {
+                    $image = $request->file('photo');
+                    $imageName = time() . '_' . $image->getClientOriginalName();
+                    $image->move(public_path('uploads/clientsPhoto'), $imageName);
+                }
                 break;
         }
 
@@ -61,13 +73,14 @@ class AuthController extends Controller
             'role' => $request->role,
         ]);
 
+
         switch ($user->role) {
             case 'client':
                 Client::create([
                     'idUser' => $user->id,
                     'nom' => $request->nom,
                     'genre' => $request->genre,
-                    'photo' => $request->photo,
+                    'photo' => 'uploads/clientsPhoto/' . $imageName,
                     'telephone' => $request->telephone,
                     'ville' => $request->ville
                 ]);
@@ -79,7 +92,7 @@ class AuthController extends Controller
                     'genre' => $request->genre,
                     'telephone' => $request->telephone,
                     'ville' => $request->ville,
-                    'photo' => $request->photo,
+                    'photo' => 'uploads/techniciensPhoto/' . $imageName,
                     'adresse' => $request->adresse,
                     'status' => $request->status,
                     'idSpecialite' => $request->idSpecialite,

@@ -44,12 +44,12 @@ const AdminSlider = () => {
           </div>
           <div className="text">الطلبات والعروض</div>
         </NavLink>
-        <NavLink className="btn">
+        {/* <NavLink className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faFile} className="ml-2" />
           </div>
           <div className="text">ادارة المحتوى</div>
-        </NavLink>
+        </NavLink> */}
         <NavLink className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faRightFromBracket} className="ml-2" />

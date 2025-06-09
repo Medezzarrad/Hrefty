@@ -1,7 +1,45 @@
 import React, { useEffect, useState } from "react";
 import "../../../style/adminDashboard/dashboardPages/overview.scss";
+import { useDispatch, useSelector } from "react-redux";
+import {
+  addAds,
+  deleteAds,
+  listAds,
+  updateAds,
+} from "../../../redux/Slices/adminSlice";
 
 const Overview = () => {
+  const dispatch = useDispatch();
+  const [formInputs, setFormInputs] = useState({
+    link: "",
+    image: null,
+  });
+  const handleAddAds = () => {
+    const data = new FormData();
+    data.append("link", formInputs.link);
+    data.append("image", formInputs.image);
+
+    dispatch(addAds(data));
+  };
+  useEffect(() => {
+    dispatch(listAds());
+  }, [dispatch]);
+  const ads = useSelector((state) => state.admin.ads);
+
+  const handlePauseAds = (id) => {
+    const etat = 'inactif'
+    dispatch(updateAds({ id, etat }));
+  };
+  
+  const handlePlayAds = (id) => {
+    const etat = 'actif'
+    dispatch(updateAds({ id, etat }));
+  };
+
+  const handleDeleteAds = (id) => {
+    dispatch(deleteAds(id));
+  };
+
   return (
     <div className="Overview">
       <div className="statistiques">
@@ -20,39 +58,69 @@ const Overview = () => {
       </div>
       <div className="ads">
         <div className="add_ads">
-          <form>
+          <form
+            onSubmit={(e) => e.preventDefault()}
+            encType="multipart/form-data"
+          >
             <input
+              onChange={(e) =>
+                setFormInputs({ ...formInputs, link: e.target.value })
+              }
               type="text"
               className="form-control"
               placeholder="رابط الاعلان"
             />
-            <input type="file" className="form-control" />
-            <button className="btn btn-primary">رفع</button>
+            <input
+              onChange={(e) =>
+                setFormInputs({ ...formInputs, image: e.target.files[0] })
+              }
+              type="file"
+              className="form-control"
+            />
+            <button onClick={() => handleAddAds()} className="btn btn-primary">
+              رفع
+            </button>
           </form>
         </div>
         <div className="list_ads">
           <table className="table table-bordered table-hover">
-            <thead>
-              <tr>
-                <th>الاعلان</th>
-                <th>الحالة</th>
-                <th>رابط الاعلان</th>
-                <th>اجراء</th>
-              </tr>
-            </thead>
             <tbody>
-              <tr>
-                <td className="img">
-                  <img src="imgs/images.jpeg" alt="" />
-                </td>
-                <td className="status">مفعل</td>
-                <td className="path">https://facebook.com</td>
-                <td className="buttons">
-                  <button className="btn btn-primary">تعليق</button>
-                  <button className="btn btn-primary">رفع</button>
-                  <button className="btn btn-primary">خذف</button>
-                </td>
-              </tr>
+              {ads &&
+                ads.map((ad) => (
+                  <tr>
+                    <td className="img">
+                      <img src={`http://localhost:8000/${ad.image}`} alt="" />
+                    </td>
+                    <td className="info">
+                      <ul>
+                        <li>
+                          الحالة: {ad.actif == true ? "مفعل" : "غير مفعل"}
+                        </li>
+                        <li>الرابط: {ad.link}</li>
+                        <li className="buttons">
+                          <button
+                            onClick={() => handlePauseAds(ad.id)}
+                            className="btn"
+                          >
+                            تعليق
+                          </button>
+                          <button
+                            onClick={() => handlePlayAds(ad.id)}
+                            className="btn"
+                          >
+                            رفع
+                          </button>
+                          <button
+                            onClick={() => handleDeleteAds(ad.id)}
+                            className="btn"
+                          >
+                            حذف
+                          </button>
+                        </li>
+                      </ul>
+                    </td>
+                  </tr>
+                ))}
             </tbody>
           </table>
         </div>

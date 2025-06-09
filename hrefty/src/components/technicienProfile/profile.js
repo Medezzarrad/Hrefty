@@ -13,6 +13,7 @@ import { useDispatch, useSelector } from "react-redux";
 import {
   addEvaluation,
   evaluationsList,
+  moyenne,
   technicienInfo,
 } from "../../redux/Slices/profileSlice";
 import { useParams } from "react-router-dom";
@@ -29,7 +30,7 @@ const Profile = () => {
   const [formInputs, setFormInputs] = useState({
     note: "",
     comment: "",
-    idClient: user.role == "client" ? user.client.id : user.artisan.id,
+    idClient: user.role == "client" ? user.client.id : "",
     idArtisan: "",
   });
   useEffect(() => {
@@ -41,8 +42,16 @@ const Profile = () => {
     }
   }, [technicien]);
 
+  useEffect(() => {
+    dispatch(moyenne(id));
+  }, []);
+  const moy = useSelector((state) => state.profile.moyenne);
+  console.log(moy);
+
   const handleAdd = () => {
-    dispatch(addEvaluation(formInputs));
+    user.role == "client"
+      ? dispatch(addEvaluation(formInputs))
+      : alert("you are not a client");
   };
 
   useEffect(() => {
@@ -55,7 +64,7 @@ const Profile = () => {
       <Navbar />
       <div className="content">
         <div className="profile">
-          <img src="imgs/images.jpeg" alt="" />
+          <img style={{objectFit: 'cover'}} src={`http://localhost:8000/${technicien.photo}`} alt="" />
           <ul>
             <li>
               <FontAwesomeIcon className="icon" icon={faUser} />{" "}
@@ -76,7 +85,11 @@ const Profile = () => {
             </li>
             <li className="stars">
               {[...Array(5)].map((_, i) => (
-                <FontAwesomeIcon key={i} icon={faStar} />
+                <FontAwesomeIcon
+                  key={i}
+                  icon={faStar}
+                  style={{ color: i < moy ? "#088178" : "#e4e5e9" }}
+                />
               ))}
             </li>
           </ul>
@@ -87,7 +100,7 @@ const Profile = () => {
               .filter((comment) => comment.idArtisan === technicien.id)
               .map((comment) => (
                 <div key={comment.id} className="comment">
-                  <img src="" alt="" />
+                  <img style={{objectFit: 'cover'}} src={`http://localhost:8000/${comment?.client?.photo}`} alt="" />
                   <div className="comment-content">
                     <div className="client">
                       <p>{comment?.client?.nom}</p>

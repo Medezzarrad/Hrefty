@@ -21,6 +21,7 @@ const Demandes_offres = () => {
     dispatch(listDemandes());
   }, [dispatch]);
   const demandes = useSelector((state) => state.admin.demandeOffres);
+  console.log(demandes)
   const handleDeleteDemande = (id) => {
     dispatch(deleteDemande(id));
   };
@@ -33,7 +34,7 @@ const Demandes_offres = () => {
         demandes.map((demande) => (
           <div className="demande">
             <div className="cols1">
-              <img src="imgs/images.jpeg" alt="" />
+              <img src={`http://localhost:8000/${demande.photo}`} />
               <div className="info">
                 <ul>
                   <li>
@@ -92,7 +93,7 @@ const Demandes_offres = () => {
                   <tbody>
                     {demande.offres &&
                       demande.offres
-                        .filter((off) => off.statut == "en attente")
+                        .filter((off) => off.statut == "en_attente")
                         .map((off) => (
                           <tr key={off.id}>
                             <td>{off.artisan.nom}</td>

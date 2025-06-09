@@ -32,7 +32,7 @@ class OffreController extends Controller
             $vaildatedData = $request->validate([
                 'description' => 'required|string',
                 'montant' => 'required|numeric',
-                'statut' => 'required|string|in:ecceptable,inacceptable,en attente',
+                'statut' => 'required|string|in:ecceptable,inacceptable,en_attente',
                 'idDemande' => 'required|integer',
                 'idArtisan' => 'required|integer',
                 'dateCreation' => 'required|date',
@@ -85,9 +85,34 @@ class OffreController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, string $id)
+    public function update(Request $request, $id)
     {
-        //
+        try {
+            $offre = Offre::find($id);
+            $vaildatedData = $request->validate([
+                'statut' => 'required|string|in:acceptable,inacceptable',
+            ]);
+            if (!$offre) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Offre not found.'
+                ], 404);
+            }
+            $offre->update([
+                'statut' => $vaildatedData['statut']
+            ]);
+            return response()->json([
+                'success' => true,
+                'message' => 'Offre updated successfully.',
+                'data' => $offre
+            ]);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error updating the offre.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
     }
 
     /**

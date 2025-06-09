@@ -49,6 +49,8 @@ class DemandeController extends Controller
             $vaildatedData = $request->validate([
                 'titre' => 'required|string|max:255',
                 'adresse' => 'required|string|max:255',
+                'ville' => 'required|string|max:255',
+                'category' => 'required|integer',
                 'description' => 'required|string',
                 'budget' => 'required|numeric',
                 'status' => 'required|string|in:en_cours,en_attente,Annulé',
@@ -58,22 +60,26 @@ class DemandeController extends Controller
                 'dateCreation' => 'required|date',
                 'idClient' => 'required|integer',
             ]);
-            if ($request->hasFile('photo')) {
-                $image = $request->file('photo');
-                $imageName = time() . '_' . $image->getClientOriginalName();
-                $image->move(public_path('uploads/demandes_images'), $imageName);
-            };
+
             $demande = new Demande();
             $demande->titre = $vaildatedData['titre'];
             $demande->adresse = $vaildatedData['adresse'];
-            $demande->budget = $vaildatedData['budget'];
+            $demande->ville = $vaildatedData['ville'];
+            $demande->category = $vaildatedData['category'];
+            $demande->budget = intval($vaildatedData['budget']);
             $demande->status = $vaildatedData['status'];
             $demande->description = $vaildatedData['description'];
             $demande->telephone = $vaildatedData['telephone'];
             $demande->dateExecution = $vaildatedData['dateExecution'];
-            $demande->photo = $vaildatedData['photo'];
             $demande->dateCreation = $vaildatedData['dateCreation'];
             $demande->idClient = $vaildatedData['idClient'];
+            if ($request->hasFile('photo')) {
+                $image = $request->file('photo');
+                $imageName = time() . '_' . $image->getClientOriginalName();
+                $image->move(public_path('uploads/demandes_images'), $imageName);
+                $demande->photo = 'uploads/demandes_images/' . $imageName;
+            }
+
             $demande->save();
             return response()->json([
                 'success' => true,

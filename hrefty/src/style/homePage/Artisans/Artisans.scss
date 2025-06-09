@@ -3,9 +3,8 @@ $secondaryColor: #4dc7b8;
 $secondaryHoverColor: #15696c;
 $titleColor: #1c797d;
 $textColor: #2f9d8d;
-$cardBackgroundColor: #E7E9F4;
-$backgroundColor: #F5F5F5;
-
+$cardBackgroundColor: #e7e9f4;
+$backgroundColor: #f5f5f5;
 
 * {
   padding: 0;
@@ -26,11 +25,11 @@ $backgroundColor: #F5F5F5;
     p {
       margin-top: 1.5rem;
       color: $textColor;
-      button {
+      .btn {
         background-color: $secondaryColor;
         color: #fff;
         margin-right: 1rem;
-        &:hover{
+        &:hover {
           background-color: $secondaryHoverColor;
         }
       }

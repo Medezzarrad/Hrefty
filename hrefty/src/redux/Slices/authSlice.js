@@ -10,10 +10,16 @@ export const register = createAsyncThunk(
       await axios.get("http://localhost:8000/sanctum/csrf-cookie", {
         withCredentials: true,
       });
+
       const response = await axios.post(
         "http://localhost:8000/api/register",
         userData,
-        { withCredentials: true }
+        {
+          headers: {
+            "Content-Type": "multipart/form-data",
+          },
+          withCredentials: true,
+        }
       );
 
       return response.data;
@@ -82,6 +88,9 @@ const authSlice = createSlice({
         state.token = action.payload.token;
         sessionStorage.setItem("user", JSON.stringify(action.payload.user));
         sessionStorage.setItem("token", action.payload.token);
+        action.payload.user.role == "client"
+          ? (window.location.href = "/client_panel")
+          : (window.location.href = "/technicien_panel");
         state.status = "succeeded";
       })
       .addCase(login.fulfilled, (state, action) => {

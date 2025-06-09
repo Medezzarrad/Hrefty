@@ -34,6 +34,7 @@ export const addOffre = createAsyncThunk(
     formData.append("statut", formInputs.statut);
     formData.append("idArtisan", formInputs.idArtisan);
     formData.append("dateCreation", formattedDate);
+    console.log(formattedDate)
     const response = await axios.post(`${url}/offre`, formData);
     return response.data;
   }
@@ -43,6 +44,15 @@ export const demandesList = createAsyncThunk(
   "artisan/demandesList",
   async () => {
     const response = await axios.get(`${url}/demande`);
+    return response.data;
+  }
+);
+export const statistiques = createAsyncThunk(
+  "artisan/statistiques",
+  async (id) => {
+    const response = await axios.post(`${url}/artisan/statistiques`, {
+      artisanId: id,
+    });
     return response.data;
   }
 );
@@ -73,6 +83,7 @@ const user = JSON.parse(sessionStorage.getItem("user"));
 const initialState = {
   listOffres: [],
   listDemandes: [],
+  statis: [],
   artisanInfo: user ? user : {},
   status: "",
   erreur: "",
@@ -90,6 +101,7 @@ const artisanSlider = createSlice({
       .addCase(addOffre.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.listOffres = action.payload;
+        window.location.href = '/technicien_panel'
       })
       .addCase(addOffre.rejected, (state) => {
         state.status = "rejected";
@@ -113,6 +125,17 @@ const artisanSlider = createSlice({
         state.listDemandes = action.payload.data;
       })
       .addCase(demandesList.rejected, (state) => {
+        state.status = "rejected";
+      })
+
+      .addCase(statistiques.pending, (state) => {
+        state.status = "pending";
+      })
+      .addCase(statistiques.fulfilled, (state, action) => {
+        state.status = "fulfilled";
+        state.statis = action.payload.data;
+      })
+      .addCase(statistiques.rejected, (state) => {
         state.status = "rejected";
       })
 

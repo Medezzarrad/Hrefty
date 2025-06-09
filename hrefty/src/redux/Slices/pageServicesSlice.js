@@ -29,11 +29,16 @@ const servicesSlider = createSlice({
   name: "services",
   initialState,
   reducers: {
-    // const filerServices = ()=>{
-    //     state.filtredList = state.listServices.filter((service)=>{
-
-    //     })
-    // }
+    filterServices: (state, action) => {
+      const { category, ville } = action.payload;
+      state.filtredList = state.listServices.filter((service) => {
+        const matchCategory = category
+          ? service.category.nom === category
+          : true;
+        const matchVille = ville ? service.client.ville.includes(ville) : true;
+        return matchCategory && matchVille;
+      });
+    },
   },
   extraReducers: (builder) => {
     builder
@@ -54,10 +59,13 @@ const servicesSlider = createSlice({
       .addCase(categoryList.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.listCategorys = action.payload.data;
+        state.filtredList = state.listServices
       })
       .addCase(categoryList.rejected, (state) => {
         state.status = "rejected";
       });
   },
 });
+export const { filterServices } = servicesSlider.actions;
+
 export default servicesSlider.reducer;

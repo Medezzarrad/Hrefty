@@ -7,6 +7,28 @@ use Illuminate\Http\Request;
 
 class EvaluationController extends Controller
 {
+    public function moyenneNoteArtisan(Request $request)
+    {
+        try {
+            $userId = $request->input('userId');
+            $moyenne = Evaluation::whereHas('technicien.user', function ($query) use ($userId) {
+                $query->where('id', $userId);
+            })->avg('note');
+            return response()->json([
+                'success' => true,
+                'message' => 'moyenne successfully retrieved.',
+                'data' => round($moyenne)
+
+            ], 200);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Error retrieving moyenne.',
+                'error' => $e->getMessage()
+            ], 500);
+        }
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -15,7 +37,7 @@ class EvaluationController extends Controller
         try {
             $evaluations = Evaluation::with([
                 'client',
-                'technicien'
+                'technicien.user'
             ])->get();
             return response()->json([
                 'success' => true,

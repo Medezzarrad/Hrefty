@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\AdsController;
 use App\Http\Controllers\ArtisanController;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\ConversationController;
@@ -20,6 +21,7 @@ Route::controller(DemandeController::class)->group(function () {
             ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
     });
     Route::post('/demande', 'store');
+    Route::put('/demande/{id}', 'update');
     Route::delete('/demande/{id}', 'destroy');
     Route::get('/demande', 'index');
 });
@@ -31,6 +33,7 @@ Route::controller(EvaluationController::class)->group(function () {
             ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
     });
     Route::get('/evaluation', 'index');
+    Route::post('/evaluation/moyenne', 'moyenneNoteArtisan');
     Route::post('/evaluation', 'store');
 });
 Route::controller(SpecialiteController::class)->group(function () {
@@ -50,6 +53,7 @@ Route::controller(ArtisanController::class)->group(function () {
             ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
     });
     Route::get('/artisan', 'index');
+    Route::post('/artisan/statistiques', 'statistiques');
     Route::get('/artisan/{id}', 'show');
     Route::put('/artisan/{id}', 'update');
 });
@@ -61,11 +65,18 @@ Route::controller(OffreController::class)->group(function () {
             ->header('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With');
     });
     Route::post('/offre', 'store');
+    Route::put('/offre/{id}', 'update');
     Route::delete('/offre/{id}', 'destroy');
 });
 Route::controller(AuthController::class)->group(function () {
     Route::post('/register', 'register');
     Route::post('/login', 'login');
+});
+Route::controller(AdsController::class)->group(function () {
+    Route::post('/ads', 'store');
+    Route::get('/ads', 'index');
+    Route::delete('/ads/{id}', 'destroy');
+    Route::put('/ads/{id}', 'update');
 });
 Route::get('/', function () {
     return response()->json(['message' => 'API is working']);

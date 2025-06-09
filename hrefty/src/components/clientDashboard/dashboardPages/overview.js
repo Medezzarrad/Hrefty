@@ -4,28 +4,41 @@ import "bootstrap/dist/js/bootstrap.bundle.min";
 import { useDispatch, useSelector } from "react-redux";
 import { Dropdown, Button, Modal } from "react-bootstrap";
 import "..//..//..//style/clientDashboard/dashboardPages/overview.scss";
-import { demandesList, lastArtisans } from "../../../redux/Slices/clientSlice";
+import {
+  demandesList,
+  lastArtisans,
+  updateOffre,
+} from "../../../redux/Slices/clientSlice";
 
 const OverviewClient = () => {
   const dispatch = useDispatch();
 
   const [show, setShow] = useState(false);
 
+  const [formInputs, setFormInputs] = useState({
+    link: "",
+    image: null,
+  });
+
+  const handleUpdateOffre = (id) => {
+    dispatch(updateOffre(id));
+  };
+
   // lancer la liste des last artisans
   useEffect(() => {
     dispatch(lastArtisans());
   }, [dispatch]);
   const lastArts = useSelector((state) => state.client.lastArtisans);
-  console.log(lastArts);
-
+  
   // lanver la liste des demandes
   useEffect(() => {
     dispatch(demandesList());
   }, [dispatch]);
   const listDemandes = useSelector((state) => state.client.listDemandes);
+  console.log(listDemandes);
 
   const clientRating = (id) => {
-    window.location.href = `/profile/${id}`
+    window.location.href = `/profile/${id}`;
   };
 
   return (
@@ -35,8 +48,11 @@ const OverviewClient = () => {
         <div className="artisans">
           {lastArts &&
             lastArts.map((artisan) => (
-              <div className="artisan" onClick={() => clientRating(artisan.idUser)}>
-                <img src="imgs/images.jpeg" alt="" />
+              <div
+                className="artisan"
+                onClick={() => clientRating(artisan.idUser)}
+              >
+                <img src={`http://localhost:8000/${artisan.photo}`} alt="" />
                 <ul>
                   <li>
                     <span>الاسم: </span>
@@ -59,7 +75,7 @@ const OverviewClient = () => {
             ))}
         </div>
       </div>
-      <div className="statistics">
+      {/* <div className="statistics">
         <p>
           مجموع العروض : <span>0</span>
         </p>
@@ -72,7 +88,7 @@ const OverviewClient = () => {
         <p>
           العروض المرفوضة : <span>0</span>
         </p>
-      </div>
+      </div> */}
 
       <div className="demandesList">
         <h1 className="title">الطلبلات المعلقة</h1>
@@ -81,7 +97,7 @@ const OverviewClient = () => {
             .filter((demande) => demande.status == "en_attente")
             .map((demande) => (
               <div className="demande">
-                <img src="imgs/images.jpeg" alt="" />
+                <img src={`http://localhost:8000/${demande.photo}`} alt="" />
                 <ul>
                   <li>
                     <span>العنوان:</span> <p>{demande.titre}</p>
@@ -149,72 +165,53 @@ const OverviewClient = () => {
                               <td>{offre.artisan?.nom || "—"}</td>
                               <td>{offre.montant || "—"}</td>
                               <td>
-                                <Dropdown>
-                                  <Dropdown.Toggle variant="secondary">
-                                    المزيد
-                                  </Dropdown.Toggle>
-                                  <Dropdown.Menu variant="dark">
-                                    <Dropdown.Item>
-                                      <button
-                                        onClick={() => setShow(true)}
-                                        className="btn"
-                                      >
-                                        عرض تفاصيل العرض
-                                      </button>
-                                      <Modal
-                                        show={show}
-                                        onHide={() => setShow(false)}
-                                        centered
-                                      >
-                                        <Modal.Header closeButton>
-                                          <Modal.Title>
-                                            تفاصيل العرض
-                                          </Modal.Title>
-                                        </Modal.Header>
-                                        <Modal.Body>
-                                          <ul className="list-group list-group-flush">
-                                            <li className="list-group-item">
-                                              <span>عنوان الطلب:</span>{" "}
-                                              {demande.titre}
-                                            </li>
-                                            <li className="list-group-item">
-                                              <span>وصف العرض:</span>{" "}
-                                              {offre.description}
-                                            </li>
-                                            <li className="list-group-item">
-                                              <span>ميزانية العرض:</span>{" "}
-                                              {offre.montant}
-                                            </li>
-                                            <li className="list-group-item">
-                                              <span>الحرفي:</span>{" "}
-                                              {offre.artisan?.nom}
-                                            </li>
-                                            <li className="list-group-item">
-                                              <span>تاريخ رفع العرض:</span>{" "}
-                                              {offre.dateCreation}
-                                            </li>
-                                          </ul>
-                                        </Modal.Body>
-                                        <Modal.Footer>
-                                          <Button
-                                            variant="secondary"
-                                            onClick={() => setShow(false)}
-                                          >
-                                            إغلاق
-                                          </Button>
-                                        </Modal.Footer>
-                                      </Modal>
-                                    </Dropdown.Item>
-                                    <Dropdown.Item className="btn">
-                                      <button className="btn">
-                                        تعليق العرض
-                                      </button>
-                                    </Dropdown.Item>
-                                    <Dropdown.Item className="btn">
-                                      <button className="btn">رفض العرض</button>
-                                    </Dropdown.Item>
-                                  </Dropdown.Menu>
-                                </Dropdown>
+                                <button
+                                  onClick={() => setShow(true)}
+                                  className="btn d-flex justify-content-center"
+                                >
+                                  عرض تفاصيل العرض
+                                </button>
+                                <Modal
+                                  show={show}
+                                  onHide={() => setShow(false)}
+                                  centered
+                                >
+                                  <Modal.Header closeButton>
+                                    <Modal.Title>تفاصيل العرض</Modal.Title>
+                                  </Modal.Header>
+                                  <Modal.Body>
+                                    <ul className="list-group list-group-flush">
+                                      <li className="list-group-item">
+                                        <span>عنوان الطلب:</span>{" "}
+                                        {demande.titre}
+                                      </li>
+                                      <li className="list-group-item">
+                                        <span>وصف العرض:</span>{" "}
+                                        {offre.description}
+                                      </li>
+                                      <li className="list-group-item">
+                                        <span>ميزانية العرض:</span>{" "}
+                                        {offre.montant}
+                                      </li>
+                                      <li className="list-group-item">
+                                        <span>الحرفي:</span>{" "}
+                                        {offre.artisan?.nom}
+                                      </li>
+                                      <li className="list-group-item">
+                                        <span>تاريخ رفع العرض:</span>{" "}
+                                        {offre.dateCreation}
+                                      </li>
+                                    </ul>
+                                  </Modal.Body>
+                                  <Modal.Footer>
+                                    <Button
+                                      variant="secondary"
+                                      onClick={() => setShow(false)}
+                                    >
+                                      إغلاق
+                                    </Button>
+                                  </Modal.Footer>
+                                </Modal>
                               </td>
                             </tr>
                           ))}
@@ -248,7 +245,7 @@ const OverviewClient = () => {
                 .filter((demande) => demande.status === "en_attente")
                 .map((demande) => {
                   const offresEnAttente = demande.offres?.filter(
-                    (offre) => offre.statut === "en attente"
+                    (offre) => offre.statut === "en_attente"
                   );
 
                   if (!offresEnAttente || offresEnAttente.length === 0) {
@@ -330,12 +327,24 @@ const OverviewClient = () => {
                                       </Modal>
                                     </Dropdown.Item>
                                     <Dropdown.Item className="btn">
-                                      <button className="btn">
-                                        تعليق العرض
+                                      <button
+                                        onClick={() =>
+                                          handleUpdateOffre({idOffre: offre.id, idDemande: demande.id, statut: 'acceptable'})
+                                        }
+                                        className="btn"
+                                      >
+                                        قبول العرض
                                       </button>
                                     </Dropdown.Item>
                                     <Dropdown.Item className="btn">
-                                      <button className="btn">رفض العرض</button>
+                                      <button
+                                        onClick={() =>
+                                          handleUpdateOffre({idOffre: offre.id, idDemande: demande.id, statut: 'inacceptable'})
+                                        }
+                                        className="btn"
+                                      >
+                                        رفض العرض
+                                      </button>
                                     </Dropdown.Item>
                                   </Dropdown.Menu>
                                 </Dropdown>

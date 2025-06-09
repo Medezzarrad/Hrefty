@@ -45,7 +45,7 @@ const Chat = () => {
     <div className="chat">
       <div className="right">
         {selectedConversation ? (
-          <>
+          <div className="conversation">
             <div className="header">
               <img src="/imgs/images.jpeg" alt="user" />
               <h1>{selectedConversation.nomAutreUtilisateur}</h1>
@@ -67,13 +67,14 @@ const Chat = () => {
             <div className="send-box">
               <input
                 type="text"
+                className="form-control"
                 placeholder="اكتب رسالتك هنا..."
                 value={newMessage}
                 onChange={(e) => setNewMessage(e.target.value)}
               />
-              <button onClick={handleSend}>إرسال</button>
+              <button className="btn" onClick={handleSend}>إرسال</button>
             </div>
-          </>
+          </div>
         ) : (
           <div className="no-chat">
             <p>اختر محادثة لعرض الرسائل</p>

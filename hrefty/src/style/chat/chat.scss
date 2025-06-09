@@ -12,7 +12,7 @@ $backgroundColor: #f5f5f5;
 }
 .chat {
   margin: 2rem 3rem;
-  
+
   padding: 1rem;
   border-radius: 1rem;
   height: calc(100vh - 4rem - 50px);
@@ -46,6 +46,7 @@ $backgroundColor: #f5f5f5;
         margin: 0;
         font-size: 18px;
         font-weight: 500;
+        color: $primaryColor;
       }
       img {
         width: 40px;
@@ -59,6 +60,11 @@ $backgroundColor: #f5f5f5;
     display: none;
   }
   .right {
+    .no-chat{
+      color: $primaryColor;
+      font-weight: 600;
+      text-align: center;
+    }
     .header {
       display: flex;
       box-shadow: rgba(149, 157, 165, 0.2) 0px 8px 24px;
@@ -84,38 +90,47 @@ $backgroundColor: #f5f5f5;
     scrollbar-width: none;
     -ms-overflow-style: none;
     .content {
-  display: flex;
-  flex-direction: column;
-  padding: 2rem;
-  margin-left: 1rem;
+      display: flex;
+      flex-direction: column;
+      padding: 2rem;
+      margin-left: 1rem;
 
-.message {
-  max-width: 70%;
-  padding: 0.5rem 1rem;
-  border-radius: 1rem;
-  margin-bottom: 0.5rem;
-  color: white;
+      .message {
+        max-width: 70%;
+        padding: 0.5rem 1rem;
+        border-radius: 1rem;
+        margin-bottom: 0.5rem;
+        color: white;
 
-  &.sent {
-    align-self: flex-end;
-    background-color: $secondaryColor; // Artisan
-  }
+        &.sent {
+          align-self: flex-end;
+          background-color: $secondaryColor; // Artisan
+        }
 
-  &.received {
-    align-self: flex-start;
-    background-color: $primaryColor; // Client
-  }
+        &.received {
+          align-self: flex-start;
+          background-color: $primaryColor; // Client
+        }
 
-  p {
-    margin: 0;
-  }
+        p {
+          margin: 0;
+        }
 
-  &:hover {
-    filter: brightness(0.85);
-  }
-}
-
-}
-
+        &:hover {
+          filter: brightness(0.85);
+        }
+      }
+    }
+    .send-box{
+      align-self: flex-end;
+      display: flex;
+      gap: 1rem;
+      padding-left: 1rem;
+      button{
+        background-color: $secondaryColor;
+        color: white;
+        font-weight: 500;
+      }
+    }
   }
 }

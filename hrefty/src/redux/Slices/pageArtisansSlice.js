@@ -20,12 +20,19 @@ const artisansSlider = createSlice({
   name: "artisans",
   initialState,
   reducers: {
-    // const filerServices = ()=>{
-    //     state.filtredList = state.listServices.filter((service)=>{
+    filterArtisans: (state, action) => {
+      const { category, ville } = action.payload;
 
-    //     })
-    // }
+      state.filtredList = state.listArtisans.filter((artisan) => {
+        const matchCategory = category
+          ? artisan.specialite.nom === category
+          : true;
+        const matchVille = ville ? artisan.ville.includes(ville) : true;
+        return matchCategory && matchVille;
+      });
+    },
   },
+
   extraReducers: (builder) => {
     builder
       .addCase(artisansList.pending, (state) => {
@@ -34,10 +41,13 @@ const artisansSlider = createSlice({
       .addCase(artisansList.fulfilled, (state, action) => {
         state.status = "fulfilled";
         state.listArtisans = action.payload.data;
+        state.filtredList = state.listArtisans
       })
       .addCase(artisansList.rejected, (state) => {
         state.status = "rejected";
-      })
+      });
   },
 });
+export const { filterArtisans } = artisansSlider.actions;
+
 export default artisansSlider.reducer;

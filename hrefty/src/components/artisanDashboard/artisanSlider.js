@@ -13,11 +13,16 @@ import {
 import { NavLink } from "react-router-dom";
 
 const ArtisanSlider = () => {
+  const user = JSON.parse(sessionStorage.getItem("user"));
   return (
     <div className="artisanSlider">
       <div className="sliderRight">
-        <img src="imgs/images.jpeg" />
-        <h1>الاسم</h1>
+        {user && (
+          <>
+            <img src={`http://localhost:8000/${user.artisan.photo}`} />
+            <h1>{user.artisan.nom}</h1>
+          </>
+        )}
       </div>
       <div className="sliderLeft">
         <NavLink to="/technicien_panel" className="btn">
@@ -32,12 +37,12 @@ const ArtisanSlider = () => {
           </div>
           <div className="text">المحادثات</div>
         </NavLink>
-        <NavLink className="btn">
+        {/* <NavLink className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faCog} className="ml-2" />
           </div>
           <div className="text">اعدادات الحساب</div>
-        </NavLink>
+        </NavLink> */}
         <NavLink className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faRightFromBracket} className="ml-2" />

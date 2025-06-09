@@ -6,7 +6,7 @@ import Search from "./components/homePage/Search";
 import ServiceCards from "./components/homePage/serviceCards/serviceCards";
 import Features from "./components/homePage/Features/Features";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import Artisans from "./components/artisansPage/Artisans";
+import ArtisansPage from "./components/artisansPage/Artisans";
 import Steps from "./components/homePage/Steps/Steps";
 import Footer from "./components/homePage/Footer";
 import WebFont from "webfontloader";
@@ -26,6 +26,7 @@ import Techniciens from "./components/adminDashboard/dashboardPages/techniciens"
 import Demandes_offres from "./components/adminDashboard/dashboardPages/demandes_offres";
 import Overview from "./components/adminDashboard/dashboardPages/overview";
 import Profile from "./components/technicienProfile/profile";
+import Artisans from "./components/homePage/Artisans/Artisans";
 
 const Acceuil = () => {
   return (
@@ -33,8 +34,7 @@ const Acceuil = () => {
       <Navbar />
       <SignCards />
       <HomeSection />
-      {/* <Search /> */}
-      <ServiceCards />
+      {/* <ServiceCards /> */}
       <Features />
       <Artisans />
       <Steps />
@@ -46,7 +46,7 @@ const ServicesPage = () => {
   return (
     <div style={{ fontFamily: "Tajawal, sans-serif" }}>
       <Navbar />
-      <Search />
+
       <Services />
       <Footer />
     </div>
@@ -56,8 +56,8 @@ const TechniciensPage = () => {
   return (
     <div style={{ fontFamily: "Tajawal, sans-serif" }}>
       <Navbar />
-      <Search />
-      <Artisans />
+
+      <ArtisansPage />
       <Footer />
     </div>
   );
@@ -118,14 +118,7 @@ const App = () => {
         <Route path="/register_technicien" element={<RegisterTechnicien />} />
         <Route path="/register_client" element={<RegisterClient />} />
         <Route path="/login" element={<Login />} />
-        <Route
-          path="/profile/:id"
-          element={
-            <RoleRoute allowedRole="client">
-              <Profile />
-            </RoleRoute>
-          }
-        />
+        <Route path="/profile/:id" element={<Profile />} />
         <Route
           path="/admin_panel"
           element={

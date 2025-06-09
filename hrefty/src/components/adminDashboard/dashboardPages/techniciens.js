@@ -34,7 +34,7 @@ const Techniciens = () => {
       {techniciens.map((technicien) => (
         <div className="technicien">
           <div className="cols1">
-            <img src="imgs/images.jpeg" alt="" />
+            <img src={`http://localhost:8000/${technicien.photo}`} />
           </div>
           <div className="cols2">
             <div className="buttons">
