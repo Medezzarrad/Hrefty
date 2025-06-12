@@ -1,101 +1,135 @@
-import React from "react";
-import Navbar from "./components/homePage/Navbar";
-import SignCards from "./components/homePage/signCards/signCards";
-import HomeSection from "./components/homePage/homeSection";
-import Search from "./components/homePage/Search";
-import ServiceCards from "./components/homePage/serviceCards/serviceCards";
-import Features from "./components/homePage/Features/Features";
+import React, { lazy, Suspense } from "react";
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
-import ArtisansPage from "./components/artisansPage/Artisans";
-import Steps from "./components/homePage/Steps/Steps";
-import Footer from "./components/homePage/Footer";
 import WebFont from "webfontloader";
-import Services from "./components/servicesPage/Services";
-import NewDemandePage from "./components/newOffrePage/newOffrePage";
-import ClientDashboard from "./components/clientDashboard/clientDashboard";
-import ArtisanDashboard from "./components/artisanDashboard/artisanDashboard";
-import AdminDashboard from "./components/adminDashboard/adminDashboard";
-import Register from "./components/authPages/registerClient";
-import Chat from "./components/chat/chat";
-import OverviewClient from "./components/clientDashboard/dashboardPages/overview";
-import OverviewTechnicien from "./components/artisanDashboard/dashboardPages/overview";
-import RegisterTechnicien from "./components/authPages/registerTechnicien";
-import Login from "./components/authPages/Login";
-import RegisterClient from "./components/authPages/registerClient";
-import Techniciens from "./components/adminDashboard/dashboardPages/techniciens";
-import Demandes_offres from "./components/adminDashboard/dashboardPages/demandes_offres";
-import Overview from "./components/adminDashboard/dashboardPages/overview";
-import Profile from "./components/technicienProfile/profile";
-import Artisans from "./components/homePage/Artisans/Artisans";
+import Navbar from "./components/homePage/Navbar";
+import Footer from "./components/homePage/Footer";
 
+// Lazy loaded components
+const AboutUs = lazy(() => import("./components/pages/aboutUs"));
+const SignCards = lazy(() =>
+  import("./components/homePage/signCards/signCards")
+);
+const HomeSection = lazy(() => import("./components/homePage/homeSection"));
+const Features = lazy(() => import("./components/homePage/Features/Features"));
+const Artisans = lazy(() => import("./components/homePage/Artisans/Artisans"));
+const Steps = lazy(() => import("./components/homePage/Steps/Steps"));
+
+const Services = lazy(() => import("./components/servicesPage/Services"));
+const ArtisansPage = lazy(() => import("./components/artisansPage/Artisans"));
+const RegisterTechnicien = lazy(() =>
+  import("./components/authPages/registerTechnicien")
+);
+const RegisterClient = lazy(() =>
+  import("./components/authPages/registerClient")
+);
+const Login = lazy(() => import("./components/authPages/Login"));
+const Profile = lazy(() => import("./components/technicienProfile/profile"));
+const AdminDashboard = lazy(() =>
+  import("./components/adminDashboard/adminDashboard")
+);
+const ClientDashboard = lazy(() =>
+  import("./components/clientDashboard/clientDashboard")
+);
+const ArtisanDashboard = lazy(() =>
+  import("./components/artisanDashboard/artisanDashboard")
+);
+const Overview = lazy(() =>
+  import("./components/adminDashboard/dashboardPages/overview")
+);
+const Demandes_offres = lazy(() =>
+  import("./components/adminDashboard/dashboardPages/demandes_offres")
+);
+const Techniciens = lazy(() =>
+  import("./components/adminDashboard/dashboardPages/techniciens")
+);
+const OverviewClient = lazy(() =>
+  import("./components/clientDashboard/dashboardPages/overview")
+);
+const OverviewTechnicien = lazy(() =>
+  import("./components/artisanDashboard/dashboardPages/overview")
+);
+const Chat = lazy(() => import("./components/chat/chat"));
+
+// Composants simples
 const Acceuil = () => {
   return (
     <div style={{ fontFamily: "Tajawal" }}>
       <Navbar />
-      <SignCards />
-      <HomeSection />
-      {/* <ServiceCards /> */}
-      <Features />
-      <Artisans />
-      <Steps />
+      <Suspense fallback={<div>Chargement...</div>}>
+        <SignCards />
+        <HomeSection />
+        <Features />
+        <Artisans />
+        <Steps />
+      </Suspense>
       <Footer />
     </div>
   );
 };
+
 const ServicesPage = () => {
   return (
     <div style={{ fontFamily: "Tajawal, sans-serif" }}>
       <Navbar />
-
-      <Services />
+      <Suspense fallback={<div>Chargement...</div>}>
+        <Services />
+      </Suspense>
       <Footer />
     </div>
   );
 };
+
 const TechniciensPage = () => {
   return (
     <div style={{ fontFamily: "Tajawal, sans-serif" }}>
       <Navbar />
-
-      <ArtisansPage />
+      <Suspense fallback={<div>Chargement...</div>}>
+        <ArtisansPage />
+      </Suspense>
       <Footer />
     </div>
   );
 };
-const RegisterPage = () => {
-  return (
-    <div style={{ fontFamily: "Tajawal, sans-serif" }}>
-      <Register />
-    </div>
-  );
-};
-const DashboardClient = () => {
-  return (
-    <div style={{ fontFamily: "Tajawal, sans-serif" }}>
-      <ClientDashboard />
-    </div>
-  );
-};
-const DashboardTechnicien = () => {
-  return (
-    <div style={{ fontFamily: "Tajawal, sans-serif" }}>
-      <ArtisanDashboard />
-    </div>
-  );
-};
-const DashboardAdmin = () => {
-  return (
-    <div style={{ fontFamily: "Tajawal, sans-serif" }}>
-      <AdminDashboard />
-    </div>
-  );
-};
 
+const DashboardClient = () => (
+  <div style={{ fontFamily: "Tajawal, sans-serif" }}>
+    <Suspense fallback={<div>Chargement...</div>}>
+      <ClientDashboard />
+    </Suspense>
+  </div>
+);
+
+const DashboardTechnicien = () => (
+  <div style={{ fontFamily: "Tajawal, sans-serif" }}>
+    <Suspense fallback={<div>Chargement...</div>}>
+      <ArtisanDashboard />
+    </Suspense>
+  </div>
+);
+
+const DashboardAdmin = () => (
+  <div style={{ fontFamily: "Tajawal, sans-serif" }}>
+    <Suspense fallback={<div>Chargement...</div>}>
+      <AdminDashboard />
+    </Suspense>
+  </div>
+);
+
+const About_Us = () => (
+  <div style={{ fontFamily: "Tajawal, sans-serif" }}>
+    <Suspense fallback={<div>Chargement...</div>}>
+      <Navbar />
+      <Suspense fallback={<div>Chargement...</div>}>
+        <AboutUs />
+      </Suspense>
+      <Footer />
+    </Suspense>
+  </div>
+);
+
+// Auth Guard
 const RoleRoute = ({ allowedRole, children }) => {
   const user = JSON.parse(sessionStorage.getItem("user"));
-  if (allowedRole == "admin") {
-    return children;
-  }
   if (!user || user.role !== allowedRole) {
     return <Navigate to="/login" />;
   }
@@ -111,50 +145,55 @@ const App = () => {
 
   return (
     <BrowserRouter>
-      <Routes>
-        <Route path="/" element={<Acceuil />} />
-        <Route path="/services" element={<ServicesPage />} />
-        <Route path="/techniciens" element={<TechniciensPage />} />
-        <Route path="/register_technicien" element={<RegisterTechnicien />} />
-        <Route path="/register_client" element={<RegisterClient />} />
-        <Route path="/login" element={<Login />} />
-        <Route path="/profile/:id" element={<Profile />} />
-        <Route
-          path="/admin_panel"
-          element={
-            <RoleRoute allowedRole="admin">
-              <AdminDashboard />
-            </RoleRoute>
-          }
-        >
-          <Route index element={<Overview />} />
-          <Route path="demandes_offres" element={<Demandes_offres />} />
-          <Route path="techniciens" element={<Techniciens />} />
-        </Route>
-        ²
-        <Route
-          path="/client_panel"
-          element={
-            <RoleRoute allowedRole="client">
-              <DashboardClient />
-            </RoleRoute>
-          }
-        >
-          <Route index element={<OverviewClient />} />
-          <Route path="chat" element={<Chat />} />
-        </Route>
-        <Route
-          path="/technicien_panel"
-          element={
-            <RoleRoute allowedRole="technicien">
-              <DashboardTechnicien />
-            </RoleRoute>
-          }
-        >
-          <Route index element={<OverviewTechnicien />} />
-          <Route path="chat" element={<Chat />} />
-        </Route>
-      </Routes>
+      <Suspense fallback={<div>Chargement de la page...</div>}>
+        <Routes>
+          <Route path="/" element={<Acceuil />} />
+          <Route path="/services" element={<ServicesPage />} />
+          <Route path="/techniciens" element={<TechniciensPage />} />
+          <Route path="/register_technicien" element={<RegisterTechnicien />} />
+          <Route path="/register_client" element={<RegisterClient />} />
+          <Route path="/login" element={<Login />} />
+          <Route path="/profile/:id" element={<Profile />} />
+          <Route path="/about_us" element={<About_Us />} />
+
+          <Route
+            path="/admin_panel"
+            element={
+              <RoleRoute allowedRole="admin">
+                <DashboardAdmin />
+              </RoleRoute>
+            }
+          >
+            <Route index element={<Overview />} />
+            <Route path="demandes_offres" element={<Demandes_offres />} />
+            <Route path="techniciens" element={<Techniciens />} />
+          </Route>
+
+          <Route
+            path="/client_panel"
+            element={
+              <RoleRoute allowedRole="client">
+                <DashboardClient />
+              </RoleRoute>
+            }
+          >
+            <Route index element={<OverviewClient />} />
+            <Route path="chat" element={<Chat />} />
+          </Route>
+
+          <Route
+            path="/technicien_panel"
+            element={
+              <RoleRoute allowedRole="technicien">
+                <DashboardTechnicien />
+              </RoleRoute>
+            }
+          >
+            <Route index element={<OverviewTechnicien />} />
+            <Route path="chat" element={<Chat />} />
+          </Route>
+        </Routes>
+      </Suspense>
     </BrowserRouter>
   );
 };

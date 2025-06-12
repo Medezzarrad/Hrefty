@@ -1,7 +1,7 @@
 import React from 'react'
 import Feature from './Feature'
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faCreditCard, faMagnifyingGlass, faBriefcase } from '@fortawesome/free-solid-svg-icons';
+import { faCreditCard, faMagnifyingGlass, faBriefcase, faComment, faStar } from '@fortawesome/free-solid-svg-icons';
 import '..//..//..//style/homePage/Features/Features.scss'
 
 
@@ -19,9 +19,9 @@ const Features = () => {
             icon : faBriefcase,
         },{
             id : 3,
-            title : 'نظام دفع آمن',
-            paragraph : 'يتيح الموقع خيارات دفع آمنة ومرنة لتسهيل المعاملات بين العملاء والحرفيين، مما يوفر تجربة مريحة وخالية من المخاطر لجميع الأطراف.',
-            icon : faCreditCard,
+            title : 'نطام تقييم الحرفيين',
+            paragraph : 'يتيح الموقع تقييم العملاء للحرفيين، مما يوفر تجربة مريحة وذات شفافية لجميع الأطراف.',
+            icon : faStar,
         }
     ]
   return (

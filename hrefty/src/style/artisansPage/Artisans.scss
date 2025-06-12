@@ -21,3 +21,11 @@ $backgroundColor: #F5F5F5;
         gap: 1.5rem;
     }
 }
+.Search{
+    display: flex;
+    margin: 1rem auto 2rem;
+    padding: 1rem;
+    border-radius: 1rem;
+    gap: 1rem;
+    background-color: $cardBackgroundColor;
+}

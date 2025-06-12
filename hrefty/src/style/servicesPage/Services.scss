@@ -18,6 +18,14 @@ $backgroundColor: #F5F5F5;
     padding: 3rem 3rem 0;
     gap: 3rem 1.5rem;
 }
+.Search{
+    display: flex;
+    margin: 2rem auto;
+    padding: 1rem;
+    border-radius: 1rem;
+    gap: 1rem;
+    background-color: $cardBackgroundColor;
+}
 .pagination{
     gap: 1rem;
     background-color: $cardBackgroundColor;

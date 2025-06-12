@@ -16,7 +16,7 @@ $backgroundColor: #f5f5f5;
 
   .header {
     margin: 2rem 3rem;
-    padding: 0 1rem;
+    padding:1rem;
     position: relative;
     border-radius: 1rem;
     display: grid;
@@ -32,6 +32,7 @@ $backgroundColor: #f5f5f5;
       flex-direction: column;
       background-color: $backgroundColor;
       gap: 1rem;
+      // height: 80%;
       img {
         width: 100px;
         height: 100px;
@@ -85,7 +86,6 @@ $backgroundColor: #f5f5f5;
     }
     .header-left {
       padding: 2rem 0 1rem;
-      // position: relative;
       .title-left,
       .title-right {
         position: absolute;

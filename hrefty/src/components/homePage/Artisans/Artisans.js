@@ -60,6 +60,7 @@ const Artisans = () => {
           {artisans.map((artisan, index) => (
             <Artisan
               key={index}
+              artisanId={artisan.user.id}
               artisanNom={artisan.nom}
               artisanSpecialite={artisan.specialite.nom}
               artisanImg={artisan.photo}

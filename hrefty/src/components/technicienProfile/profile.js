@@ -30,7 +30,7 @@ const Profile = () => {
   const [formInputs, setFormInputs] = useState({
     note: "",
     comment: "",
-    idClient: user.role == "client" ? user.client.id : "",
+    idClient: user && user.role == "client" ? user.client.id : "",
     idArtisan: "",
   });
   useEffect(() => {
@@ -49,9 +49,11 @@ const Profile = () => {
   console.log(moy);
 
   const handleAdd = () => {
-    user.role == "client"
-      ? dispatch(addEvaluation(formInputs))
-      : alert("you are not a client");
+    user
+      ? user.role == "client"
+        ? dispatch(addEvaluation(formInputs))
+        : alert("you are not a client")
+      : (window.location.href = "/login");
   };
 
   useEffect(() => {
@@ -64,7 +66,11 @@ const Profile = () => {
       <Navbar />
       <div className="content">
         <div className="profile">
-          <img style={{objectFit: 'cover'}} src={`http://localhost:8000/${technicien.photo}`} alt="" />
+          <img
+            style={{ objectFit: "cover" }}
+            src={`http://localhost:8000/${technicien.photo}`}
+            alt=""
+          />
           <ul>
             <li>
               <FontAwesomeIcon className="icon" icon={faUser} />{" "}
@@ -100,7 +106,11 @@ const Profile = () => {
               .filter((comment) => comment.idArtisan === technicien.id)
               .map((comment) => (
                 <div key={comment.id} className="comment">
-                  <img style={{objectFit: 'cover'}} src={`http://localhost:8000/${comment?.client?.photo}`} alt="" />
+                  <img
+                    style={{ objectFit: "cover" }}
+                    src={`http://localhost:8000/${comment?.client?.photo}`}
+                    alt=""
+                  />
                   <div className="comment-content">
                     <div className="client">
                       <p>{comment?.client?.nom}</p>

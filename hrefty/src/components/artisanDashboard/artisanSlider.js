@@ -11,9 +11,12 @@ import {
   faComment,
 } from "@fortawesome/free-solid-svg-icons";
 import { NavLink } from "react-router-dom";
+import { logout } from "../../redux/Slices/authSlice";
+import { useDispatch } from "react-redux";
 
 const ArtisanSlider = () => {
   const user = JSON.parse(sessionStorage.getItem("user"));
+  const dispatch = useDispatch()
   return (
     <div className="artisanSlider">
       <div className="sliderRight">
@@ -43,7 +46,7 @@ const ArtisanSlider = () => {
           </div>
           <div className="text">اعدادات الحساب</div>
         </NavLink> */}
-        <NavLink className="btn">
+        <NavLink onClick={()=>dispatch(logout())} className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faRightFromBracket} className="ml-2" />
           </div>

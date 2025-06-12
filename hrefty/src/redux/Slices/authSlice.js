@@ -65,12 +65,24 @@ export const logout = createAsyncThunk(
   "auth/logout",
   async (_, { rejectWithValue }) => {
     try {
-      await axios.post("/logout");
+      const token = sessionStorage.getItem("token");
+
+      await axios.post(
+        "http://localhost:8000/api/logout",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+          withCredentials: true,
+        }
+      );
     } catch (err) {
-      return rejectWithValue(err.response.data);
+      return rejectWithValue(err.response?.data || err.message);
     }
   }
 );
+
 
 const authSlice = createSlice({
   name: "auth",
@@ -110,7 +122,10 @@ const authSlice = createSlice({
       .addCase(logout.fulfilled, (state) => {
         state.user = null;
         state.token = null;
+        sessionStorage.removeItem("token");
+        sessionStorage.removeItem("user");
         state.status = "idle";
+        window.location.href = "/";
       })
       .addMatcher(
         (action) => action.type.endsWith("/pending"),

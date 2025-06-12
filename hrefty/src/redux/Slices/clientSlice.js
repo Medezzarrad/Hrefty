@@ -29,12 +29,12 @@ export const addDemande = createAsyncThunk(
     formData.append("description", formInputs.description);
     formData.append("adresse", formInputs.adresse);
     formData.append("ville", formInputs.ville);
-    formData.append("category", formInputs.category);
+    formData.append("category", +formInputs.category);
     formData.append("budget", +formInputs.budget);
     formData.append("telephone", formInputs.telephone);
     formData.append("photo", formInputs.photo);
     formData.append("dateExecution", formInputs.dateExecution);
-    formData.append("dateCreation", dateCreation);
+    // formData.append("dateCreation", dateCreation);
     formData.append("status", formInputs.status);
     formData.append("idClient", formInputs.idClient);
     console.log(formInputs);

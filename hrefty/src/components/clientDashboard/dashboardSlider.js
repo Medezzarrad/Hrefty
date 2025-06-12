@@ -10,6 +10,8 @@ import {
   faCog,
   faRightFromBracket,
   faComment,
+  faChartDiagram,
+  faChartLine,
 } from "@fortawesome/free-solid-svg-icons";
 import {
   categoryList,
@@ -19,6 +21,7 @@ import {
 import { Dropdown, Button, Modal } from "react-bootstrap";
 import { addDemande } from "../../redux/Slices/clientSlice";
 import { NavLink } from "react-router-dom";
+import { logout } from "../../redux/Slices/authSlice";
 
 const DashboardSlider = () => {
   const [show, setShow] = useState(false);
@@ -34,7 +37,6 @@ const DashboardSlider = () => {
   useEffect(() => {
     setListCategorys(categorys || []);
   }, [categorys]);
-  console.log(listCategorys)
 
   //demande Information
   const [formInputs, setFormIntputs] = useState({
@@ -46,7 +48,7 @@ const DashboardSlider = () => {
     telephone: "",
     photo: null,
     dateExecution: "",
-    category: "",
+    category: 0,
     status: "en_attente",
     idClient: user && user.client.id,
   });
@@ -67,11 +69,17 @@ const DashboardSlider = () => {
         )}
       </div>
       <div className="sliderMiddle">
-        <NavLink className="btn" to="/client_panel">
+        <NavLink className="btn" to="/">
           <div className="icon">
             <FontAwesomeIcon icon={faHome} className="ml-2" />
           </div>
           <div className="text">الرئيسية</div>
+        </NavLink>
+        <NavLink className="btn" to="/client_panel">
+          <div className="icon">
+            <FontAwesomeIcon icon={faChartLine} className="ml-2" />
+          </div>
+          <div className="text">لوحة التحكم</div>
         </NavLink>
 
         {/* فقط الزر هنا داخل NavLink بدون form أو Modal */}
@@ -89,7 +97,7 @@ const DashboardSlider = () => {
           <div className="text">المحادثات</div>
         </NavLink>
 
-        <NavLink className="btn">
+        <NavLink onClick={() => dispatch(logout())} className="btn">
           <div className="icon">
             <FontAwesomeIcon icon={faRightFromBracket} className="ml-2" />
           </div>
@@ -143,7 +151,7 @@ const DashboardSlider = () => {
                     onChange={(e) =>
                       setFormIntputs({
                         ...formInputs,
-                        budget: e.target.value,
+                        budget: Number(e.target.value),
                       })
                     }
                     min={1}
@@ -158,7 +166,7 @@ const DashboardSlider = () => {
                     onChange={(e) =>
                       setFormIntputs({
                         ...formInputs,
-                        category: e.target.value,
+                        category: Number(e.target.value),
                       })
                     }
                   >

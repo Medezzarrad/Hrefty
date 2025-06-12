@@ -4,7 +4,7 @@ import "..//..//style/homePage/Navbar.scss";
 import { NavLink } from "react-router-dom";
 
 const Navbar = () => {
-  const user = sessionStorage.getItem("user");
+  const user = JSON.parse(sessionStorage.getItem("user"));
 
   return (
     <div className="Navbar">
@@ -23,9 +23,17 @@ const Navbar = () => {
           {/* <li className='link'>المدونة</li> */}
         </ul>
         <div className="buttons">
-          {!user && (
-            <NavLink to={"/login"} className="btn">
+          {!user ? (
+            <NavLink to="/login" className="btn">
               دخول
+            </NavLink>
+          ) : user.role === "client" ? (
+            <NavLink to="/client_panel" className="btn">
+              لوحة التحكم
+            </NavLink>
+          ) : (
+            <NavLink to="/technicien_panel" className="btn">
+              لوحة التحكم
             </NavLink>
           )}
         </div>

@@ -145,7 +145,7 @@ class AuthController extends Controller
                 $user->load('client');
                 break;
             case 'technicien':
-                $user->load('artisan.specialite'); // avec la spécialité
+                $user->load('artisan.specialite');
                 break;
             case 'admin':
                 $user->load('admin');
